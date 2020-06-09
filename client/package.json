@@ -1,0 +1,47 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "homepage": ".",
+  "dependencies": {
+    "axios": "^0.18.1",
+    "bootstrap": "3.3.7",
+    "bootstrap-sass": "^3.4.1",
+    "immer": "^3.3.0",
+    "jquery": "^3.5.1",
+    "lodash": "^4.17.11",
+    "react": "^16.3.1",
+    "react-bootstrap": "^0.32.4",
+    "react-dom": "^16.3.1",
+    "react-google-charts": "^3.0.15",
+    "react-json-pretty": "^1.7.9",
+    "react-redux": "^5.1.2",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "2.0.4",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0"
+  },
+  "devDependencies": {
+    "@svgr/webpack": "^5.4.0",
+    "file-loader": "^6.0.0",
+    "node-sass": "^4.14.1",
+    "resolve-url-loader": "^2.3.2",
+    "webpack": "4.19.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}

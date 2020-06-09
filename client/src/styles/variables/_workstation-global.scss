@@ -1,0 +1,116 @@
+//WSVI is short for Workstation VI.
+
+//The global values follow the SPEC:
+//https://microstrategy.atlassian.net/wiki/display/TECTOOLSDASHBOARDDESIGN/Color+Scheme
+//https://microstrategy.atlassian.net/wiki/display/TECTOOLSDASHBOARDDESIGN/Iconography+and+Typography
+//https://microstrategy.atlassian.net/wiki/display/TECTOOLSDASHBOARDDESIGN/Color+Scheme%2C+Space+and+Size
+
+//Color Palette:
+$wsvi-primary-white: #FFF;    //Highlight Font, Secondary Panel, Secondary button
+$wsvi-primary-black: #444649; //Unselected Font
+$wsvi-primary-blue: #3B92ED;  //Primary Button
+$wsvi-primary-gray: #FAFAFA;   //Primary Panel
+$wsvi-link-blue: #1471D5; // Text button
+$wsvi-hover-gray: rgba($wsvi-primary-black, 0.06);  //Hover on a ROW
+$wsvi-hover-black: rgba($wsvi-primary-black, 0.1);  //Hover on a ROW
+$wsvi-hover-blue: rgba($wsvi-primary-blue, 1);  //Hover on a ROW which has next level menu in Context menu
+$wsvi-desc-gray: #7B7E81; //dataset object description in tooltip
+$wsvi-selected-gray: rgba($wsvi-primary-black, 0.1); //the select color on a panel (not in context menu)
+$wsvi-selected-blue: #D8EBFF; //the current focus row in a panel (not in context menu)
+$wsvi-splitline-gray: rgba($wsvi-primary-black, 0.2); //The split line to divide the contents into sections
+$wsvi-background-gray: #EEE; //The background color of root
+$wsvi-border-gray: rgba($wsvi-primary-black, 0.1);
+$wsvi-ui-border-gray: rgba($wsvi-primary-black, 0.2); //UI component Border
+$wsvi-panel-shadow: $wsvi-ui-border-gray;
+$wsvi-inputborder-disable: $wsvi-border-gray;
+$wsvi-input-shadow: rgba($wsvi-primary-black, 0.05); //UI component shadow
+$wsvi-text-selection-background-color: rgba($wsvi-primary-blue, 0.3); //UI component shadow
+$wsvi-panel-header-color: #DCDCDC; //rgba(#EFEFEF, 0.15);
+$wsvi-panel-shadow-color: rgba($wsvi-primary-black, 0.1);
+$wsvi-cm-shadow-color: $wsvi-ui-border-gray; // contextmenu box shadow
+$wsvi-dropzone-basegray: #CECECE;
+$wsvi-background-disable: #E7E8E8; //input control disabled fill in
+$wsvi-selected-button: #E4E5E5;
+$wsvi-font-button-disable: $wsvi-ui-border-gray;
+$wsvi-font-gray: rgba($wsvi-primary-black, 0.45); //Hint in text box, or text in disabled widget.
+$wsvi-background-pressed-button: #E4E5E5; //pressed normal button fill in
+$wsvi-background-pressed-button-blue: #20548B; //pressed emphazied button
+$wsvi-avatar-placeholder: $wsvi-primary-blue;
+$wsvi-avatar-background-color: rgba($wsvi-selected-blue, 0.95);
+$wsvi-avatar-text-color: rgba($wsvi-primary-black, 0.9);
+$wsvi-tooltip-border-color: rgba($wsvi-primary-black, 0.35); //new tooltip border color //change opacity, according to DE60490 tooltip refinement
+$wsvi-font-green: #229c68; //attribute/custom group/NDE/DA/Hierachy label in capsule
+$wsvi-font-yellow: #D47A00; //metric/DM label in capsule
+$wsvi-warning-orange: #FFB132; //Inherit from WS warning orange
+$wsvi-wsnavigation-gray: #656b6f; //left side navigation bar-update with WS browsing side bar
+$wsvi-configure-blue: #224D6D; //blue bar in configuration mode for LINKING, GROUPING, VIZ FILTER feature
+$wsvi-capsule-fill-normal: #E7F3FF;// map capsule fill in color-normal
+$wsvi-capsule-fill-off: #F4F9FE; // map capsule fill in color-off
+$wsvi-capsule-border-off: #B4D5F9; // map capsule border color-off
+$wsvi-capsule-border-normal: #91C2F6; // map capsule border color-normal
+$wsvi-capsule-font-normal: rgba($wsvi-link-blue, 0.65);//Normal stage:focus is outside of Editor panel, map capsule font color
+$wsvi-toggle-view-bar-border:rgba($wsvi-primary-white, 0.4);//toggle panel btn border
+$wsvi-contextmenu-gray: #F4F4F4;
+$wsvi-background-disabled: #CECECE; 
+
+//Theme
+$wsvi-primary-white-light-theme: $wsvi-primary-white;    //Highlight Font, Secondary Panel, Secondary button
+$wsvi-primary-black-light-theme: $wsvi-primary-black; //Unselected Font
+$wsvi-primary-blue-light-theme: $wsvi-primary-blue;  //Primary Button
+$wsvi-primary-gray-light-theme: $wsvi-primary-gray;   //Primary Panel
+$wsvi-hover-gray-light-theme: $wsvi-hover-gray;  //Hover on a ROW
+$wsvi-selected-gray-light-theme: $wsvi-selected-gray; //the select color on a panel (not in context menu)
+$wsvi-selected-blue-light-theme: $wsvi-selected-blue;
+$wsvi-splitline-gray-light-theme: $wsvi-splitline-gray; //The split line to divide the contents into sections
+$wsvi-background-gray-light-theme: $wsvi-background-gray; //The background color of root
+$wsvi-border-gray-light-theme: $wsvi-border-gray; //UI component Border
+$wsvi-ui-border-gray-light-theme: $wsvi-ui-border-gray; //UI component Border
+$wsvi-input-shadow-light-theme: $wsvi-input-shadow; //UI component shadow
+$wsvi-text-selection-background-color-light-theme: $wsvi-text-selection-background-color;
+$wsvi-inputborder-disable-light-theme: $wsvi-inputborder-disable;
+
+//size related
+$wsvi-panel-row-height: 26px;
+$wsvi-titlebar-editable-label-row-height:28px;//added for TOC panel, Datasets panel, VizGallery
+$wsvi-input-control-height: 26px;
+$wsvi-input-control-height-refine: 20px;
+$wsvi-box-radius: 2px;
+$wsvi-element-padding: 10px;
+$wsvi-titlecontent_paddingA: 10px;
+$wsvi-icon-padding: 10px;
+$wsvi-element-text-padding: 5px;
+$wsvi-element-horizontal-padding: 12px;
+$wsvi-editor-content-padding: 16px;
+$wsvi-input-control-border-width: 1px;
+$wsvi-input-control-line-height: $wsvi-input-control-height - 2 * $wsvi-input-control-border-width;
+$wsvi-default-icon-width: 18px;
+$wsvi-default-icon-height: 18px;
+$wsvi-verticalinput_padding_big: 12px;
+$wsvi-verticalinput_padding_small: 7px;
+$wsvi-capsule-max-width: 250px;
+$wsvi-titlecontent_paddingB: 6px;
+
+//font related
+$wsvi-font-family: Helvetica;
+$wsvi-panel-header-font-size: 10px;
+$wsvi-panel-header-font-weight: bold;
+
+$wsvi-normal-font-family: Helvetica;
+$wsvi-normal-font-size: 12px;
+$wsvi-normal-font-style: normal;
+$wsvi-bold-font-weight: bold;
+$wsvi-normal-font-padding-top: ($wsvi-panel-row-height - $wsvi-normal-font-size) / 2;
+
+$wsvi-tips-font-size: 11px;
+$wsvi-tips-line-height: 18px; // $dm-tips
+$wsvi-tips-header-font-weight: bold;
+
+// tab related
+$wsvi-canvas-bk: #F9F9F9;
+$wsvi-tab-bar: #E7E8E8;
+$wsvi-tab-border: #C6C7C8;
+$wsvi-tab-btn-bar-bk: #E0E0E0;
+
+
+//Tooltip Related
+$wsvi-tooltip-bg-color: #FFFFFF; //DE60490;tooltip background color

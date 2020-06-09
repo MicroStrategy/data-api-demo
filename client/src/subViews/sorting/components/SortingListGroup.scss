@@ -1,0 +1,139 @@
+@import '../../../styles/_base';
+$QP__sorting__table__sort: 180px;
+$QP__sorting__table__clear: 196px;
+$QP__sorting__table__content__dropdown__element: 180px;
+$QP__sorting__table__content__dropdown__sorting: 100px;
+$QP__sorting__table__item__paddingLeft: 7px;
+
+
+.QP__sorting{
+    height: 27%;
+    min-height: 192px;
+
+    .QP__sorting__table{
+        background-color: white;
+        border: 1px solid rgba(68, 70, 73, 0.2);
+        height: calc(100% - 42px);
+        .QP__sorting__table__index{
+            background-color: #FAFAFA;
+            font-size: 12px;
+            line-height: 28px;
+            color: rgb(68, 70, 73);
+            padding-left: 16px;
+            padding-right: 16px;
+            .QP__sorting__table__order{
+                display: -webkit-inline-box;
+                width: -webkit-calc(100% - #{$QP__sorting__table__sort} - #{$QP__sorting__table__clear});
+            }
+            .QP__sorting__table__sort{
+                display: -webkit-inline-box;
+                width: $QP__sorting__table__sort;
+            }
+            .QP__sorting__table__clear{
+                display: -webkit-inline-box;
+                @extend %hyper-text;
+                width: $QP__sorting__table__clear;
+                text-align: -webkit-right;
+            }
+        }
+        .QP__sorting__table__content{
+            border-radius: 0%;
+            .QP__sorting__table__row{
+                font-size: 11px;
+                margin-bottom: 0px;
+                border-radius: 0%;
+                .QP__sorting__table__row__item{
+                    border-radius: 0%;
+                    padding-right: 12px;
+                    padding-left: 27px;
+                    .QP__sorting__table__row__index{
+                        display: -webkit-inline-box;
+                        width: -webkit-calc(100% - #{$QP__sorting__table__sort} - #{$QP__sorting__table__clear});
+                    }
+                    .QP__sorting__table__row__element_group{
+                        display: -webkit-inline-box;
+                        .QP__sorting__table__row__elementButton{
+                        @include dropdown($QP__sorting__table__content__dropdown__element);
+                        .caret {
+                            @include caret(60, 100);
+                          }
+                        }
+                        .QP__sorting__table__row__unselected__elementButton{
+                            @include dropdown($QP__sorting__table__content__dropdown__element);
+                            .caret {
+                                @include caret(60, 100);
+                              }
+                            color:grey;
+                        }
+
+                    }
+                    .QP__sorting__table__row__sorting_group{
+                        display: -webkit-inline-box;
+                        margin-left: 40px;
+                        .QP__sorting__table__row__sortingButton{
+                            @include dropdown($QP__sorting__table__content__dropdown__sorting);
+                            .caret {
+                                @include caret(60, 100);
+                            }
+                        }
+                        .QP__sorting__table__row__unselected__sortingButton{
+                            @include dropdown($QP__sorting__table__content__dropdown__sorting);
+                            .caret {
+                                @include caret(60, 100);
+                            }
+                            color:grey;
+                        }
+                        .QP__sorting__table__row__default{
+                            padding-left: 7px;
+                            padding-right: 8px;
+                            margin-right: 16px;
+                        }
+                        .QP__sorting__table__row__unselected__default{
+                            padding-left: 7px;
+                            padding-right: 8px;
+                            margin-right: 16px;
+                            color: grey;
+                        }
+                    }
+                    .dropdown-menu{
+                        width: 100%;
+                        min-width: 80px;
+                        overflow: auto;
+                        max-height: 200px;
+                        .QP__sorting__table__row__sortingMenu__Item{
+                            width: 100%;
+                            border-radius: 2px;
+                            >a{
+                                padding-left: $QP__sorting__table__item__paddingLeft;
+                            }
+                        }
+                        .QP__sorting__table__row__elementMenu__Item{
+                            width: 100%;
+                            border-radius: 2px;
+                            >a{
+                                padding-left: $QP__sorting__table__item__paddingLeft;
+                            }
+                        }
+                        .QP__sorting__table__row__elementMenu__Unselected__Item{
+                            width: 100%;
+                            border-radius: 2px;
+                            >a{
+                                padding-left: $QP__sorting__table__item__paddingLeft;
+                                color: grey;
+                            }
+                        }
+                    }
+                    .QP__sorting__table__row__delete{
+                        display: -webkit-inline-box;
+                        text-align: -webkit-right;
+                        width: 18px;
+                        margin-left: 40px;
+                        position: absolute;
+                        top:13px;
+                        right: 10px;
+                    }
+                }
+            }
+        }
+    }
+}

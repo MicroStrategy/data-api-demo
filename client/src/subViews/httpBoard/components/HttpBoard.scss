@@ -1,0 +1,110 @@
+@import '../../../styles/_base';
+
+$http-url-width: 260px;
+
+.QP__httpBoard{
+    height: 100%;
+    border-top: 1px solid rgba(68, 70, 73, 0.2);   
+    display: flex;    
+
+    .QP__httpBoard__splitLine{
+        margin-top: 0;
+        margin-bottom: 0;
+        
+    }
+
+    .QP__httpBoard__request-urls{
+        width: $http-url-width;
+        height: 100%;
+        
+        &.url-only {
+            width: 100%;   
+        }
+    }
+    
+    .QP__httpBoard__request-details{
+        width: calc(100% - #{$http-url-width});
+        height: 100%;
+        border-left: 1px solid rgba(68, 70, 73, 0.2);
+    }
+
+    .QP__httpBoard__title{
+        // font-size: 12px;
+        color: #444649;
+        height: 34px;
+        background-color: #FAFAFA;
+        line-height: 34px;
+        -webkit-box-align: center;
+        padding-left: 15px;
+        display: flex;
+        
+        &.QP__httpRequests{
+            justify-content: space-between;
+        }
+
+        .QP__httpBoard__title__clear{
+            @extend %hyper-text;
+            margin-right: 15px;
+        }
+
+        .QP__httpBoard__title-detail-tab{
+            width: 100px;
+            text-align: center;
+            cursor: pointer;
+
+            &.unselected:hover, &.unselected:focus{
+                background-color: $wsvi-hover-gray;
+            }
+
+            &.selected{
+                border-bottom: 2px solid $wsvi-primary-blue;
+            }
+        }
+    }
+    .QP__httpBoard__content{
+        height: calc(100% - 34px);;
+        overflow: auto;
+
+        .QP__httpBoard__url-list-item{
+            height: $wsvi-panel-row-height; 
+            line-height: $wsvi-panel-row-height;
+            padding: 0 15px;
+            @extend %ellipsis;
+            @extend %colored-focus;
+        }
+
+        pre {
+            height: 100%;
+            width: 100%;
+            overflow: auto;
+            border: none;
+            background-color: #fff;
+            // font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+            margin-bottom: 0;
+            font-size: 12px;
+        }
+        
+        .QP__httpBoard__headers{
+            width: 100%;
+            padding: 0 15px;
+            .headers-lv-one, .headers-lv-two{
+                line-height: $wsvi-panel-row-height;
+            }
+
+            .headers-lv-one {
+                height: $wsvi-panel-row-height;
+                font-weight: bold;    
+            }
+
+            .headers-lv-two {
+                display: flex;
+                width: calc(100% - 15px);
+
+                .headers-lv-two__title{
+                    padding: 0 15px;
+                    font-weight: bold;  
+                }
+            }
+        }
+    }
+}

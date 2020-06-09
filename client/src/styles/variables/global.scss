@@ -1,0 +1,27 @@
+@import './workstation-global';
+
+body {
+  button{
+    font-size: $wsvi-tips-font-size;
+    
+    &:hover, &:focus {
+      outline: none;
+    }
+  }
+
+  ul > li {
+    outline: none;  
+  }
+
+  input[type=text]{
+    outline: none;
+  }
+
+  .dropdown-menu {
+    font-size: $wsvi-tips-font-size;
+
+    a {
+      outline: none;
+    }
+  }
+}

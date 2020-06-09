@@ -1,0 +1,57 @@
+@import "../../../styles/_base";
+
+.filter-container-header {
+  height: $wsvi-panel-row-height;
+  line-height: $wsvi-panel-row-height;
+}
+
+.filter-list-div {
+  border: 1px rgba(68, 70, 73, 0.2) solid;
+  border-radius: 0 0 2px 2px;
+  background: #ffffff;
+  height: calc(100% - 42px);
+  overflow: auto;
+
+  .filter-title-div {
+      border-bottom: 1px rgba(68, 70, 73, 0.2) solid;
+      border-radius: 2px 2px 0 0;
+      background: #ffffff;
+      height: 28px;
+      line-height: 26px;
+      padding-left: 16px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+  
+      .filter-title-new, .filter-title-clear {
+          @extend %hyper-text;
+      }
+  
+      .filter-title-clear {
+          margin-right: 12px;
+      }
+  }
+
+  .filter-list-item {
+      padding-left: 16px;
+      display: flex;
+      justify-content: space-between;
+      padding-right: 12px;
+      height: $wsvi-panel-row-height;
+      line-height: $wsvi-panel-row-height;
+  
+      .filter-list-item-close {
+          display: none;
+          margin: 5px 0;
+          cursor: pointer;
+      }
+      
+      &:hover {
+          background-color: rgba(68, 70, 73, 0.06);
+  
+          .filter-list-item-close {
+              display: block;
+          }
+      }
+  } 
+}

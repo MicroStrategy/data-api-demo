@@ -1,0 +1,266 @@
+@import '../../../styles/base';
+
+@mixin caret_local {
+    margin-top: 0px;
+    right: 4px;
+    position: absolute;
+    top: 5px;
+    @include caret(20, 100);
+    height: 18px;
+    width: 18px;
+    border-top: 0px;
+}
+
+.QP__filter-editor{
+
+    .modal-content {
+        border-radius: 2px;
+
+        .modal-header {
+            padding: 5px 15px;
+            padding-left: 16px;
+            padding-right: 12px;
+            background-color: #EDEDED;
+
+            .dialogue-title-bar {
+                height: 26px;
+                // width: 602px;
+                // background-color: #EDEDED;
+                // padding-left: 16px;
+        
+                .title-bar-text {
+                    // font-family: "Helvetica Neue";
+                    font-weight: bold;
+                    font-size: 12px;
+                    line-height: 18px;
+                    color: #444649;
+                    padding-top:5px;
+                    margin: 0;
+                }
+            }
+        }
+
+        .modal-body {
+            padding: 0;
+
+            .QP__filter-editor__body {
+                height: 420px;
+                display: flex;
+                justify-content: space-between;
+
+                .QP__filter-editor__middle {
+                    padding: 15px 0;
+                    width: 33%;
+                    border: 1px solid #ddd;
+                    border-top: none;
+                    border-bottom: none;
+
+                    &.qualification-on{
+                        padding: 15px;
+                    }
+                }
+
+                .QP__filter-editor__left, .QP__filter-editor__right {
+                    padding: 15px;
+                    width: 33%;
+
+                    .dropdown{
+                        .QP__filter__editor__DropDown{
+                            width: 167px;
+                            
+                            height: $wsvi-panel-row-height;
+                            font-size: 11px;
+                            background-color: #FFFFFF;
+                            text-align: left;
+                            border-radius: 0px;
+                            .caret {
+                                @include caret_local();
+                            }
+
+                            &.QP__filter__editor__attribute-btn{
+                                padding-left: 30px;
+                                &::before {
+                                    top: 4px;
+                                    left: 7px;
+                                    position: absolute;
+
+                                    content: ''; 
+                                    @include qp-icon;    
+                                }
+
+                                &.attribute::before {
+                                    @include qp-icon-pos(20, 180);
+                                }
+
+                                &.metric::before {
+                                    @include qp-icon-pos(60, 180);
+                                }
+                            }
+                        }
+                        .dropdown-menu{
+                            overflow: auto;
+                            max-height: 286px;
+                            width: 100%;
+                            
+                            .QP__filter__editor__MenuItem{
+                                position: relative;
+
+                                &.active > a{
+                                    background-color: $wsvi-primary-blue;
+                                }
+
+                                &.attribute, &.metric {
+                                    >a{
+                                        padding-left: 30px;
+                                        &::before {
+                                            top: 4px;
+                                            left: 7px;
+                                            position: absolute;
+        
+                                            content: ''; 
+                                            @include qp-icon;    
+                                        }
+                                    }
+                                }
+                                &.attribute>a::before {
+                                    @include qp-icon-pos(20, 180);
+                                }
+
+                                &.metric>a::before {
+                                    @include qp-icon-pos(60, 180);
+                                }
+
+                                >a{
+                                    padding: 5px 0 5px 12px;
+                                }
+                            }
+                        }
+                    }
+
+                    .custom-control-input{
+                        display: none;
+                    }
+                    .QP__filter__editor__choosePart{
+                        margin-top: 15px;
+                    }
+                    .QP__filter__editor__selectPart{
+                        margin-top: 15px;
+                    }
+                }
+
+                .QP__filter-editor__middle{
+                    .element-list-header{
+                        line-height: $wsvi-panel-row-height;
+                        display: -webkit-box;
+                        padding: 0 15px;
+                        .QP__filter__editor__list__header__input{
+                            display: none;
+                        }
+                        .QP__item-icon{
+                            margin-top: 4px;
+                        }
+                    }
+                    
+                    .element-list{
+                        padding-top: 10px;
+                        height: calc(100% - #{$wsvi-panel-row-height});
+                        overflow-y: auto;
+                        
+                        .element-item {
+                            line-height: $wsvi-panel-row-height;
+                            display: flex;
+                            padding: 0 15px;
+
+                            &:hover, &:focus{
+                                background-color: $wsvi-hover-gray;
+                            }
+
+                            .QP__filter__editor__list__element__input{
+                                display: none;
+                            }
+                            .QP__item-icon{
+                                margin-top: 4px;
+                            }
+                        }
+                    }
+                    .element-span-wrapper{
+                        padding-left: 8px;
+                        cursor: default;
+                        position: relative;
+                        margin-left: 0px; 
+                    }
+                }
+
+                .custom-radio-container{
+                    height: $wsvi-panel-row-height;
+                }
+
+                .custom-control-label {
+                    padding-left: 7px;
+                    cursor: default;
+                    position: absolute
+                }
+            }
+
+            .client-select {
+                width: 80%;
+                height: $wsvi-panel-row-height;
+                margin-top: 5px;
+            }
+        
+            li.client-list-group-item {
+                width: 100%;
+                color: #495057;
+                text-align: inherit;
+            
+                @extend %colored-focus;
+            }        
+        }
+
+        .modal-footer {
+            button {
+                height: 26px;
+                padding-top: 4px;
+                padding-bottom: 4px;
+                margin: 0 0 0 8px;
+                min-width: 72px;
+                border-radius: 2px;
+                line-height: 16px;
+                font-size: $wsvi-normal-font-size;
+
+                &:hover, &:focus {
+                    outline: none;
+                }
+
+                &.btn-primary {
+                    background-color: $wsvi-primary-blue;
+
+                    &:hover, &:focus {
+                        background-color: $wsvi-background-pressed-button-blue;
+                    }
+                }
+        
+                &[disabled], &[disabled]:hover, &[disabled]:focus{
+                    background-color: $wsvi-background-disabled;
+                    border-color: $wsvi-background-disabled;
+                }
+            }
+        }
+    }
+    
+    .client-li {
+        border: none;
+        padding: 2px;
+        list-style:none;
+        height: $wsvi-panel-row-height;
+        line-height: $wsvi-panel-row-height;
+    }
+
+    .grey-label {
+        font-size: 12px;
+        font-weight: bold;
+        color: #444649;
+        opacity: .75;
+        height:26px;
+    }
+}
