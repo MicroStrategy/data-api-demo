@@ -1,10 +1,10 @@
 # MicroStrategy REST API Data Demo
-Contains the code of the javascript app that demonstrates the capabilities of the MicroStrategy REST Data APIs. This Demo was created using a [Create React App] (https://facebook.github.io/create-react-app/docs/getting-started).
+Contains the code of the React app that demonstrates the capabilities of the MicroStrategy REST Data APIs. This Demo was created using a [Create React App] (https://facebook.github.io/create-react-app/docs/getting-started).
 
 ## Description:
-This App is a sample demo app to show the users how to use MicroStrategy REST Data APIs to execute cubes and reports while enabling features like filtering, sorting and metric limits on the data for the V2 data endpoints.
+This App is a sample demo app to show the users how to use MicroStrategy REST Data APIs to execute cubes and reports while enabling features like filtering, sorting and application of metric limits on the data for the V2 data endpoints.
 
-A list of REST APIs were used in the demo. The workflow for those were used to authenticating, searching and fetching datasets, creating new instances of those reports and cubes and displaying the filtered/sorted data.  
+A list of REST APIs were used in the demo. The workflow of API endpoints used for the demo include authenticating the user, searching and fetching datasets, creating new instances of the reports and cubes, displaying the filtered/sorted data from those cubes and reports.  
 
 ## REST APIs Used:
 
@@ -28,7 +28,8 @@ In the demo, this API was used to fetch definitions of 4 report grids which were
 Creating a new instance of a specific cube. This in-memory instance can be used by other subsequent requests. 
 In the demo, this API was used to create a new instance of the data in the cube chosen in the dataset dropdown. The body of this request can accept values for performing filtering operations:  
 
-```{
+```
+{
   "viewFilter": {
     "operator": "And",
     "operands": [
@@ -78,13 +79,13 @@ This POST creates a returns an `instanceId` which is a new resource, which popul
 ## Customizing and Deploying this App
 1. Download or clone this repo. 
 2. Run `npm install`.
-3. Change the library url in src/config.js, to point to your MicroStrategy Library. View config.js, to see if the rest server configuration is correct. If not, change it.
+3. Change the library url in src/config.js, to point to your MicroStrategy Library, with the correct login credentials and verfiy REST server configuration.
 4. Run `npm run build`. The build result files are under the build directory.
 5. Create a empty folder "JsonDemoJS" under tomcat "webapps" directory.
-6. Copy the result from build directory to "JsonDemoJS" folder in #5.
+6. Copy the result from build directory to "JsonDemoJS" folder of tomcat.
 7. Restart tomcat, and visit http://localhost:8080/JsonDemoJS, you can use the new Quality play demo now.
 
-The below document is generated automatically by Create React App(You can just ignore it):
+The below document is generated automatically by Create React App:
 
 ## Available Scripts
 
@@ -128,3 +129,8 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+### Troubleshooting
+
+In case of CORS (Cross-origin resource sharing) error, make sure that the MicroStrategy Library CORS settings allow requests from Tomcat hosted demo. These settings can be updated in the [Library Admin Page's Security Settings.](https://community.microstrategy.com/s/article/How-to-Enable-CORS-in-MicroStrategyLibrary-10-10?language=en_US)
+
