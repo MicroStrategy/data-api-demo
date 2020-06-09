@@ -1,0 +1,42 @@
+@import '../../../styles/_base';
+
+$dataset-title-width: 60px;
+$dropdown-btn-width: 100%;
+
+.QP__datasetList{
+  width: 100%;
+  padding: 16px 0;
+  height: 58px;
+  
+  .QP__datasetList__title{
+    float: left;
+    line-height: $wsvi-panel-row-height;
+    width: $dataset-title-width;
+  }
+
+  > .btn-group{
+    width: calc(100% - #{$dataset-title-width});
+
+    .QP__datasetList__dropdownButton{
+      @extend %ellipsis;
+      @include dropdown($dropdown-btn-width);
+      .caret {
+        border-top: none;
+        @include caret(20, 100);
+      }
+    }
+  }
+
+  .dropdown-menu{
+    width: 100%;
+    
+    >li>a {
+      padding: 5px 10px;
+      @extend %ellipsis;
+    }
+
+    >.active>a, >.active>a:focus, >.active>a:hover {
+      background-color: $wsvi-hover-blue;
+    }
+  }
+}

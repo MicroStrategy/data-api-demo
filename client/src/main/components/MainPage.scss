@@ -1,0 +1,144 @@
+@import "../../styles/_base";
+
+$title-height: 52px; 
+$left-padding: 16px;
+$apply-bar-height: 56px;
+
+html, body, #root {
+  height: 100%;
+  font-size: $wsvi-normal-font-size;
+  font-family: "Helvetica Neue";
+
+  button, .dropdown-menu {
+    font-size: $wsvi-tips-font-size;
+  }
+}
+
+.quality-play-app {
+  height: 100%;
+  
+  .pop-alert.alert{
+    position: absolute;
+    width: 100%;
+    z-index: 10000;
+  }
+
+  .QP__title {
+    height: $title-height;
+    background-color: #d9232e;
+    width: 100%;
+    position: relative;
+    min-width: 1000px;
+
+    .QP__title__icon {
+      width: 300px;
+      height: 20px;
+      margin: 16px 0 0 15px;
+    }
+    
+    .QP__title__span {
+      display: inline-block;
+      margin-left: 10px;
+      font-size: 1.5em;
+      color: rgba(255,255,255,0.95);
+      vertical-align: 4px;
+    }
+  }
+
+  .QP__context {
+    height: calc(100% - #{$title-height});
+
+    .QP__context__left {
+      padding: 0 $left-padding;
+      float: left;
+      height: 100%;
+      background-color: #f4f4f4;
+      position: relative;
+
+      .QP__conditions {
+        height: calc(100% - #{$title-height} - #{$apply-bar-height});
+        overflow-y: auto;
+
+        .QP__conditions__title {
+          line-height: 18px;
+          padding: 16px 0 8px 0;
+        }
+
+        .QP__attributes-metrics-container .QP__conditions__title {
+          padding-top: 0;
+        }
+
+        .QP__conditions__viewFilters, .QP__conditions__metrics {
+          min-height: 162px;
+          height: 23%;
+        }
+      }
+
+      .QP__apply-bar {
+        width: 100%;
+        height: $apply-bar-height;
+        padding-top: 16px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        
+        .QP__apply-bar__button{
+          float: right;
+          width: 70px;
+          border-radius: 2px;
+          margin-right: 16px;
+
+          &:hover, &:focus {
+            outline: none;
+          }
+        }
+      }
+    }
+
+    .QP__context__right {
+      float: left;
+      height: 100%;
+
+      .QP__results{
+        height: 50%;
+        min-width: 520px;
+      }
+
+      .QP__https{
+        height: 50%;
+        min-width: 520px;
+      }
+
+    }
+
+    @media only screen and (max-width: 1024px) {
+      .QP__context__left {
+        width: 480px;
+      }
+
+      .QP__context__right {
+        width: calc(100% - 480px);
+      }
+    }
+
+    @media only screen and (min-width: 1024px) and (max-width: 1280px) {
+      .QP__context__left {
+        width: 520px;
+      }
+
+      .QP__context__right {
+        width: calc(100% - 520px);
+      }
+    }
+
+    @media only screen and (min-width: 1280px) {
+      .QP__context__left {
+        width: 580px;
+      }
+
+      .QP__context__right {
+        width: calc(100% - 580px);
+      }
+    }
+  }
+}

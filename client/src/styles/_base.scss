@@ -1,0 +1,184 @@
+@import './variables/global';
+@import './variables/workstation-global';
+
+%ellipsis {
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+%colored-focus{
+  &:hover, &:focus{
+    background-color: $wsvi-hover-gray;
+  }
+
+  &.selected, &.selected:hover, &.selected:focus {
+    background-color: $wsvi-hover-blue;
+    color: $wsvi-primary-white;
+  }
+}
+
+%hyper-text {
+  color: $wsvi-hover-blue;
+  cursor: pointer;
+
+  &:hover {
+      color: #0056b3;
+  }
+}
+
+$wsweb-icon-small-size: $wsvi-default-icon-width;
+
+@mixin qp-icon($width:$wsweb-icon-small-size, $height:$wsweb-icon-small-size) {
+  background-image: url('~/JsonDemoJS/api_demo_icon.svg');
+  width: $width;
+  height: $height;
+  display: inline-block;
+}
+
+@mixin qp-icon-pos($x, $y) {
+  background-position: (-$x * 1px) (-$y * 1px);
+}
+
+@mixin dropdown($width) {
+  width:$width;
+  text-align: left;
+  border-radius: 2px;
+  height: 26px;
+  padding-bottom: 2px;
+  padding-top: 2px;
+  padding-left: $wsvi-verticalinput_padding_small;
+}
+
+@mixin caret($x, $y) {
+  margin-top: 0px;
+  right: 4px;
+  position: absolute;
+  top: 4px;
+  background-image: url('~/JsonDemoJS/api_demo_icon.svg');
+  background-position: (-$x * 1px) (-$y * 1px);
+  height: 18px;
+  width: 18px;
+  border-bottom: 0px;
+}
+
+.qp-icon {
+  @include qp-icon;
+}
+
+.qp-mstr-icon {
+  @include qp-icon(300, 20);
+  @include qp-icon-pos(20, 20);
+}
+
+.qp-prev-page-icon {
+  @include qp-icon;
+  @include qp-icon-pos(100, 60);
+}
+
+.qp-next-page-icon {
+  @include qp-icon;
+  @include qp-icon-pos(140, 60);
+}
+
+.qp-first-page-icon {
+  @include qp-icon;
+  @include qp-icon-pos(180, 60);
+}
+
+.qp-last-page-icon {
+  @include qp-icon;
+  @include qp-icon-pos(220, 60);
+}
+
+.qp-attribute-icon {
+  @include qp-icon;
+  @include qp-icon-pos(20, 180);
+}
+
+.qp-metric-icon {
+  @include qp-icon;
+  @include qp-icon-pos(60, 180);
+}
+
+.qp-multi-check-icon {
+  @include qp-icon;
+  @include qp-icon-pos(20, 60);
+}
+
+.qp-multi-uncheck-icon {
+  @include qp-icon;
+  @include qp-icon-pos(60, 60);
+}
+
+.qp-radio-check-icon {
+  @include qp-icon;
+  @include qp-icon-pos(100, 140);
+}
+
+.qp-radio-uncheck-icon {
+  @include qp-icon;
+  @include qp-icon-pos(140, 140);
+}
+
+.QP__delete__icon{
+  @include qp-icon;
+  @include qp-icon-pos(60, 140);
+}
+
+.QP__warning__icon,
+.QP__warning__icon::before,
+.QP__warning__icon::after
+{
+  position: relative;
+  padding: 0;
+  margin: 0;
+}
+
+.QP__warning__icon {
+  font-size: 12px;
+  color: transparent;
+}
+
+.QP__warning__icon.warning {
+  display: inline-block;
+
+  top: 0.225em;
+
+  width: 1.15em;
+  height: 1.15em;
+
+  overflow: hidden;
+  border: none;
+  background-color: transparent;
+  border-radius: 0.625em;
+  left: 24px;
+}
+
+.QP__warning__icon.warning::before {
+  content: "";
+  display: block;
+  top: -0.08em;
+  left: 0.0em;
+  position: absolute;
+  border: transparent 0.6em solid;
+  border-bottom-color: #fd3;
+  border-bottom-width: 1em;
+  border-top-width: 0;
+  box-shadow: #999 0 1px 1px;
+}
+
+.QP__warning__icon.warning::after {
+  display: block;
+  position: absolute;
+  top: 0.3em;
+  left: 0;
+  width: 100%;
+  padding: 0 1px;
+  text-align: center;
+  font-family: "Garamond";
+  content: "!";
+  font-size: 0.65em;
+  font-weight: bold;
+  color: #333;
+}
