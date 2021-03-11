@@ -1,0 +1,10 @@
+_site
+.sass-cache
+.jekyll-cache
+.jekyll-metadata
+vendor
+node_modules/
+build/
+npm-debug.log
+.env
+.DS_Stores

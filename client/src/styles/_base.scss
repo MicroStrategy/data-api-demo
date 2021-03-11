@@ -30,7 +30,7 @@
 $wsweb-icon-small-size: $wsvi-default-icon-width;
 
 @mixin qp-icon($width:$wsweb-icon-small-size, $height:$wsweb-icon-small-size) {
-  background-image: url('~/JsonDemoJS/api_demo_icon.svg');
+  background-image: url('~/./api_demo_icon.svg');
   width: $width;
   height: $height;
   display: inline-block;
@@ -55,7 +55,7 @@ $wsweb-icon-small-size: $wsvi-default-icon-width;
   right: 4px;
   position: absolute;
   top: 4px;
-  background-image: url('~/JsonDemoJS/api_demo_icon.svg');
+  background-image: url('~/./api_demo_icon.svg');
   background-position: (-$x * 1px) (-$y * 1px);
   height: 18px;
   width: 18px;
