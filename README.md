@@ -138,4 +138,15 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 ### Troubleshooting
 
-In case of CORS (Cross-origin resource sharing) error, make sure that the MicroStrategy Library CORS settings allow requests from Tomcat hosted demo. These settings can be updated in the [Library Admin Page's Security Settings.](https://community.microstrategy.com/s/article/How-to-Enable-CORS-in-MicroStrategyLibrary-10-10?language=en_US)
+In case of CORS (Cross-origin resource sharing) error, make sure that the MicroStrategy Library CORS settings allow requests from the hosting domain of this demo. These settings can be updated in the [Library Admin Page's Security Settings.](https://www2.microstrategy.com/producthelp/Current/InstallConfig/en-us/Content/library_admin_control_panel.htm).  
+
+To enable CORS for the Library Server:
+
+1. Open the Library Admin page. Your URL should be similar to the following:
+
+    ```
+    https://<host_name>:<port>/MicroStrategyLibrary/admin
+    ```
+
+1. Navigate to Library Server -> Security Settings.
+1. Choose the appropriate setting for *Allow Library embedding in other sites* to reconfigure CORS.
