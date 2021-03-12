@@ -1,14 +1,14 @@
 # MicroStrategy REST API Data Demo
 Contains the code of the React app that demonstrates the capabilities of the MicroStrategy REST Data APIs. This Demo was created using a [Create React App](https://facebook.github.io/create-react-app/docs/getting-started).
 
-View [the live demo](https://microstrategy.github.io/data-api-demo/site/). 
+View [the live demo](https://microstrategy.github.io/data-api-demo/site/).
 
-## Description:
+## Description
 This App is a sample demo app to show the users how to use MicroStrategy REST Data APIs to execute cubes and reports while enabling features like filtering, sorting, and application of metric limits on the data for the V2 data endpoints.
 
 A list of REST APIs were used in the demo. The workflow of API endpoints used for the demo includes authenticating the user, searching and fetching datasets, creating new instances of the reports and cubes, displaying the filtered/sorted data from those cubes and reports.  
 
-## REST APIs Used:
+## REST APIs Used
 
 #### POST /auth/login 
 Creating a MicroStrategy session given credentials and authentication mode. An authToken will be returned for later operations.
@@ -20,17 +20,17 @@ In the demo, this API was used to fetch the objects of type report grid and repo
 
 #### GET /v2/cubes/{cubeId}
 Get the definition of a specific cube, including attributes and metrics.
-In the demo, this API was used to fetch definitions of 3 report cubes that were populated in the datasets. 
+In the demo, this API was used to fetch definitions of 3 report cubes that were populated in the datasets.
 
 #### GET /v2/reports/{reportId}
 Get the definition of a specific report, including attributes and metrics.
-In the demo, this API was used to fetch definitions of 4 report grids that were populated in the datasets. 
+In the demo, this API was used to fetch definitions of 4 report grids that were populated in the datasets.
 
 #### POST /v2/cubes/{cubeId}/instances?offset=0&limit=20
-Creating a new instance of a specific cube. This in-memory instance can be used by other subsequent requests. 
+Creating a new instance of a specific cube. This in-memory instance can be used by other subsequent requests.
 In the demo, this API was used to create a new instance of the data in the cube chosen in the dataset dropdown. The body of this request can accept values for performing filtering operations:
 
-```json
+```javascript
 {
   "viewFilter": {
     "operator": "And",
@@ -139,4 +139,3 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 ### Troubleshooting
 
 In case of CORS (Cross-origin resource sharing) error, make sure that the MicroStrategy Library CORS settings allow requests from Tomcat hosted demo. These settings can be updated in the [Library Admin Page's Security Settings.](https://community.microstrategy.com/s/article/How-to-Enable-CORS-in-MicroStrategyLibrary-10-10?language=en_US)
-
