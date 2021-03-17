@@ -65,9 +65,9 @@ const login = async (dispatch) => {
     return await callRestApi(AUTH_URL, {
         method: 'post',
         data: {
-            loginMode: 1,
-            username: demoConfig.username,
-            password: demoConfig.password
+            loginMode: 8
+            // username: demoConfig.username,
+            // password: demoConfig.password
         }
     }, dispatch)
 }

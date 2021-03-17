@@ -1,15 +1,17 @@
 # MicroStrategy REST API Data Demo
-Contains the code of the React app that demonstrates the capabilities of the MicroStrategy REST Data APIs. This Demo was created using a [Create React App] (https://facebook.github.io/create-react-app/docs/getting-started).
+Contains the code of the React app that demonstrates the capabilities of the MicroStrategy REST Data APIs. This Demo was created using a [Create React App](https://facebook.github.io/create-react-app/docs/getting-started).
 
-## Description:
-This App is a sample demo app to show the users how to use MicroStrategy REST Data APIs to execute cubes and reports while enabling features like filtering, sorting and application of metric limits on the data for the V2 data endpoints.
+View [the live demo](https://microstrategy.github.io/data-api-demo/site/).
 
-A list of REST APIs were used in the demo. The workflow of API endpoints used for the demo include authenticating the user, searching and fetching datasets, creating new instances of the reports and cubes, displaying the filtered/sorted data from those cubes and reports.  
+## Description
+This App is a sample demo app to show the users how to use MicroStrategy REST Data APIs to execute cubes and reports while enabling features like filtering, sorting, and application of metric limits on the data for the V2 data endpoints.
 
-## REST APIs Used:
+A list of REST APIs were used in the demo. The workflow of API endpoints used for the demo includes authenticating the user, searching and fetching datasets, creating new instances of the reports and cubes, displaying the filtered/sorted data from those cubes and reports.  
+
+## REST APIs Used
 
 #### POST /auth/login 
-Creating a MicroStrategy session given credentials and authentication mode. An authToken will be returned for latter operations.
+Creating a MicroStrategy session given credentials and authentication mode. An authToken will be returned for later operations.
 In the demo, this API was used to create a configuration session.
 
 #### GET/searches/results
@@ -18,17 +20,17 @@ In the demo, this API was used to fetch the objects of type report grid and repo
 
 #### GET /v2/cubes/{cubeId}
 Get the definition of a specific cube, including attributes and metrics.
-In the demo, this API was used to fetch definitions of 3 report cubes which were populated in the datasets. 
+In the demo, this API was used to fetch definitions of 3 report cubes that were populated in the datasets.
 
 #### GET /v2/reports/{reportId}
 Get the definition of a specific report, including attributes and metrics.
-In the demo, this API was used to fetch definitions of 4 report grids which were populated in the datasets. 
+In the demo, this API was used to fetch definitions of 4 report grids that were populated in the datasets.
 
 #### POST /v2/cubes/{cubeId}/instances?offset=0&limit=20
-Creating a new instance of a specific cube. This in-memory instance can be used by other subsequent requests. 
-In the demo, this API was used to create a new instance of the data in the cube chosen in the dataset dropdown. The body of this request can accept values for performing filtering operations:  
+Creating a new instance of a specific cube. This in-memory instance can be used by other subsequent requests.
+In the demo, this API was used to create a new instance of the data in the cube chosen in the dataset dropdown. The body of this request can accept values for performing filtering operations:
 
-```
+```javascript
 {
   "viewFilter": {
     "operator": "And",
@@ -74,16 +76,15 @@ In the demo, this API was used to create a new instance of the data in the cube 
 }
 ```
 
-This POST creates a returns an `instanceId` which is a new resource, which populates the grid in the demo with the data filtered with attribute name Memphis and metric limit on Profit greater than 1000. A similar request is made on a report grid with the endpoint POST /v2/reports/{reportId}/instances?offset=0&limit=20
+This POST creates a returns an `instanceId` which is a new resource, which populates the grid in the demo with the data filtered with an attribute name Memphis and a metric limit on Profit greater than 1000. A similar request is made on a report grid with the endpoint POST /v2/reports/{reportId}/instances?offset=0&limit=20
 
 ## Customizing and Deploying this App
-1. Download or clone this repo. 
-2. Run `npm install`.
-3. Change the library url in src/config.js, to point to your MicroStrategy Library, with the correct login credentials and verfiy REST server configuration.
-4. Run `npm run build`. The build result files are under the build directory.
-5. Create a empty folder "JsonDemoJS" under tomcat "webapps" directory.
-6. Copy the result from build directory to "JsonDemoJS" folder of tomcat.
-7. Restart tomcat, and visit http://localhost:8080/JsonDemoJS, you can use the new Quality play demo now.
+1. Download or clone this repo.
+1. `cd client`
+1. Run `npm install`.
+1. Change the library URL in src/config.js, to point to your MicroStrategy Library, with the correct login credentials and verify REST server configuration.
+1. Run `npm run build`. The build result files are under the build directory. (Note: Change the relative path of api_demo_icon.svg, if it is not deployed to root folder.)
+1. Alternatively, run `npm start` to debug the application.
 
 The below document is generated automatically by Create React App:
 
@@ -93,23 +94,28 @@ In the project directory, you can run:
 
 ### `npm start`
 
-Runs the app in the development mode.<br>
+Runs the app in the development mode.
+
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br>
+The page will reload if you make edits.
+
 You will also see any lint errors in the console.
 
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.<br>
+Launches the test runner in the interactive watch mode.
+
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.<br>
+Builds the app for production to the `build` folder.
+
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.<br>
+The build is minified and the filenames include the hashes.
+
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
@@ -132,5 +138,15 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 ### Troubleshooting
 
-In case of CORS (Cross-origin resource sharing) error, make sure that the MicroStrategy Library CORS settings allow requests from Tomcat hosted demo. These settings can be updated in the [Library Admin Page's Security Settings.](https://community.microstrategy.com/s/article/How-to-Enable-CORS-in-MicroStrategyLibrary-10-10?language=en_US)
+In case of CORS (Cross-origin resource sharing) error, make sure that the MicroStrategy Library CORS settings allow requests from the hosting domain of this demo. These settings can be updated in the [Library Admin Page's Security Settings.](https://www2.microstrategy.com/producthelp/Current/InstallConfig/en-us/Content/library_admin_control_panel.htm).  
 
+To enable CORS for the Library Server:
+
+1. Open the Library Admin page. Your URL should be similar to the following:
+
+    ```
+    https://<host_name>:<port>/MicroStrategyLibrary/admin
+    ```
+
+1. Navigate to Library Server -> Security Settings.
+1. Choose the appropriate setting for *Allow Library embedding in other sites* to reconfigure CORS.
