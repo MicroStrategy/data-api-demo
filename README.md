@@ -88,7 +88,7 @@ This POST creates a returns an `instanceId` which is a new resource, which popul
 
 ## Configure the Sample
 
-The config.js file is used to configure the sample for your environment. Set values for the following variables to configure the Intelligence Server, project, folder, user credentials, and number of documents to display on the page.
+The [config.js file](./client/src/config.js) is used to configure the sample for your environment. You can modify the values of the following variables listed in the table to configure what to display on the page, including the Intelligence Server, project, folder, and the number of documents.
 
 | Variable name | Variable description |
 |:-------------|:------------------|
