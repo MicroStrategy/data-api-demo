@@ -94,8 +94,6 @@ The config.js file is used to configure the sample for your environment. Set val
 |:-------------|:------------------|
 | restServerURL | Base URL of the REST API. For example, http://localhost:8080/MicroStrategyLibrary/api. The REST API endpoints will be appended to this base URL. |
 | projectId | ID of the MicroStrategy project that will be used by the REST API endpoints. For example, "B19DEDCC11D4E0EFC000EB9495D0F44F". |
-| username | Username that will be authenticated. |
-| password| Password for username that will be authenticated. |
 | itemPerPage | Number of items the table will display per page |
 | cubes | Array of cube IDs. These cubes are listed in the Datasets panel on the left of the sample, under Cubes. Be sure to use valid cube IDs. For more information, see [Supported Features](https://www2.microstrategy.com/producthelp/CURRENT/RESTSDK/Content/topics/REST_API/REST_API_REST_Data_API_SupportedFeatures.htm).|
 | reports | Array of report IDs. These reports are listed in the Datasets panel on the left of the sample, under Reports. Be sure to use valid report IDs. For more information, see [Supported Features](https://www2.microstrategy.com/producthelp/CURRENT/RESTSDK/Content/topics/REST_API/REST_API_REST_Data_API_SupportedFeatures.htm). |
