@@ -86,7 +86,33 @@ This POST creates a returns an `instanceId` which is a new resource, which popul
 1. Run `npm run build`. The build result files are under the build directory. (Note: Change the relative path of api_demo_icon.svg, if it is not deployed to root folder.)
 1. Alternatively, run `npm start` to debug the application.
 
-The below document is generated automatically by Create React App:
+## Configure the Sample
+
+The [config.js file](./client/src/config.js) is used to configure the sample for your environment. You can modify the values of the following variables listed in the table to configure what to display on the page, including the Intelligence Server, project, folder, and the number of documents.
+
+| Variable name | Variable description |
+|:-------------|:------------------|
+| restServerURL | Base URL of the REST API. For example, http://localhost:8080/MicroStrategyLibrary/api. The REST API endpoints will be appended to this base URL. |
+| projectId | ID of the MicroStrategy project that will be used by the REST API endpoints. For example, "B19DEDCC11D4E0EFC000EB9495D0F44F". |
+| itemPerPage | Number of items the table will display per page |
+| cubes | Array of cube IDs. These cubes are listed in the Datasets panel on the left of the sample, under Cubes. Be sure to use valid cube IDs. For more information, see [Supported Features](https://www2.microstrategy.com/producthelp/CURRENT/RESTSDK/Content/topics/REST_API/REST_API_REST_Data_API_SupportedFeatures.htm).|
+| reports | Array of report IDs. These reports are listed in the Datasets panel on the left of the sample, under Reports. Be sure to use valid report IDs. For more information, see [Supported Features](https://www2.microstrategy.com/producthelp/CURRENT/RESTSDK/Content/topics/REST_API/REST_API_REST_Data_API_SupportedFeatures.htm). |
+| datasets | Array of reports or cubes to be shown by default. |
+
+## Use the Sample
+
+Initially, the demo displays a list of cubes and reports in the panel on the left. Users select a cube or report from the list.
+
+Once users have made a selection, the attributes and metrics for the selected cube or report are displayed in the panel below and a data table is displayed in the panel on the right. By default, all the attributes and metrics are shown initially, but users can select specific attributes or metrics and apply them manually.
+
+Below the attributes, users are given the option to apply view filters. This demo supports two kinds of view filters: element filter and attribute form filter. Users define a filter, click **New**, and then click Apply. The data displayed is filtered as soon as the view filter is applied.
+
+Users can also see the raw JSON result by clicking the icon above the data table, and they can page through the previous and next pages using the left and right arrows.
+
+![](assets/img/JsonDemoJS.png)
+
+
+The rest part is generated automatically by Create React App.
 
 ## Available Scripts
 
