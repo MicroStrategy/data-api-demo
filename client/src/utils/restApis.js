@@ -17,7 +17,7 @@ const LIMIT = 5
 
 const {CUBE_TYPE} = CONSTANTS
 
-const getAccessToken = () => {
+export const getAccessToken = () => {
     return sessionStorage.getItem(X_MSTR_AUTH_TOKEN)
 }
 
@@ -65,9 +65,9 @@ const login = async (dispatch) => {
     return await callRestApi(AUTH_URL, {
         method: 'post',
         data: {
-            loginMode: 8
-            // username: demoConfig.username,
-            // password: demoConfig.password
+            loginMode: 1,
+            username: demoConfig.username,
+            password: demoConfig.password
         }
     }, dispatch)
 }
@@ -78,6 +78,13 @@ export const loginAndResetToken = async (dispatch) => {
     storeAccessToken(loginResponse.headers[X_MSTR_AUTH_TOKEN.toLowerCase()])
    
 }
+
+export const identityToken = async ( dispatch) => {
+    const url = `/auth/identityToken`
+        const response = await callRestApi(url, {method : "post" }, dispatch)
+        return response.headers['x-mstr-identitytoken']
+}
+
 
 const requestRetry = async (url, options, dispatch) => {
     for (let i = 0; i < CONSTANTS.MAX_TRY_COUNT; i++) {
@@ -138,7 +145,8 @@ export const getDatasetDefinition = async (dataset, projectID, dispatch) => {
 }
 
 export const getAttributeElements = async (projectId, dataset, instanceId, attributeId, dispatch) => {
-    const url = `/cubes/${dataset.id}/instance/${instanceId}/attributes/${attributeId}/elements`
+    //const url = `/cubes/${dataset.id}/instance/${instanceId}/attributes/${attributeId}/elements`
+    const url = `/cubes/${dataset.id}/attributes/${attributeId}/elements`
     return await requestRetry(url, {
         headers: {
             [X_MSTR_PROJECT_ID]: projectId

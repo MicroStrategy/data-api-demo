@@ -22,14 +22,15 @@ const MainPage = ({
             {showError && <Alert className="pop-alert" bsStyle="danger" onDismiss={onHideErrorMessage}>
                 {latestError}
             </Alert>}
-            <div className="QP__title">
-                <div className="QP__title__icon qp-mstr-icon"></div>
-            </div>
             <div className="QP__context">
                 <div className="QP__context__left">
                     <DatasetDropListContainer />
                     { !dataIsEmpty && (<div className="QP__conditions">
                         <AttributeMetricArea />
+                    </div>)}                    
+                </div>
+                <div className="QP__context__right"> 
+                { !dataIsEmpty && (<div className="QP__conditions">
                         <div className="QP__conditions__viewFilters">
                             <div className="QP__conditions__title">View Filters</div>
                             <FilterSummaryContainer isViewFilter={true}/>    
@@ -43,12 +44,6 @@ const MainPage = ({
                     { !dataIsEmpty && (<div className="QP__apply-bar">
                         <Button className="QP__apply-bar__button" onClick={() => onApplyCondition()}>Apply</Button>
                     </div>)}
-                </div>
-                <div className="QP__context__right"> 
-                    <ResultTableContainer />
-                    <div className="QP__https">
-                        <HttpBoardContainer />
-                    </div>
                 </div>
             </div>
         </div>

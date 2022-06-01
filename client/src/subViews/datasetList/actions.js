@@ -3,6 +3,7 @@
 import {httpErrorHandling} from '../../utils/utils'
 import {createInstanceAsync, getDatasetListAsync} from '../../utils/restUtils'
 import {DATASET_LIST_ACTIONS, RESULT_ACTIONS, MAIN_UI_ACTIONS} from '../../constants'
+import demoConfig from '../../config'
 
 export const getDatasetList = () => {
 	return (dispatch, getState) => {
@@ -17,8 +18,8 @@ export const changeSelectDataset = (index) => {
 			type: DATASET_LIST_ACTIONS.CHANGE_SELECT_DATASET,
 			payload: index
 		})
-		createInstanceAndRefreshTable(dispatch, getState, 0).catch(
-			httpErrorHandling(dispatch, MAIN_UI_ACTIONS.DISPLAY_ERROR_MSG))
+		//createInstanceAndRefreshTable(dispatch, getState, 0).catch(
+		//	httpErrorHandling(dispatch, MAIN_UI_ACTIONS.DISPLAY_ERROR_MSG))
 	}
 }
 
@@ -35,10 +36,16 @@ const getDatasetsAndCreateInstance = async (dispatch, getState) => {
 		type: DATASET_LIST_ACTIONS.SET_DATASET_LIST,
 		payload: datasetsResult
 	})
-	return await createInstanceAndRefreshTable(dispatch, getState, 0)
+
+	return;  
+	//demoConfig.itemPerPage = 0 ; 
+	//return await createInstanceAndRefreshTable(dispatch, getState, 0)
 }
 
+
 export const createInstanceAndRefreshTable = async (dispatch, getState, pageIndex) => {
+
+	
 	const data = await createInstanceAsync(dispatch, getState, pageIndex)
 	if (data.status === 2) {
 		dispatch({

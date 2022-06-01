@@ -136,11 +136,11 @@ class FilterEditor extends React.Component {
                                     checked={(this.state.selectedElementIndexs.find((selectedElementIndex) => {
                                         return selectedElementIndex === index
                                     })) >= 0} onChange={(e) => { this.clickMultiElementOption(index) }}
-                                    ref={element.name} readOnly/>
+                                    ref={element.formValues[0]} readOnly/>
                                 <div className={`QP__item-icon ${(this.state.selectedElementIndexs.find((selectedElementIndex) => {
                                     return selectedElementIndex === index
                                 })) >= 0 ? "qp-multi-check-icon" : "qp-multi-uncheck-icon"}`} />
-                                <div className = "element-span-wrapper">{element.name}</div>
+                                <div className = "element-span-wrapper">{ element.formValues[0]}</div>
                             </div>
                         })}
                     </div>
@@ -272,7 +272,7 @@ class FilterEditor extends React.Component {
 
     getCheckBoxElementName(index){
         const attribute = this.props.availableObjects[this.state.selectedIndex]
-        return attribute.elements[index].name;
+        return attribute.elements[index].formValues[0];
     }
     clickMultiElement(index,needCheck){
         let newSelectedElementIndexs

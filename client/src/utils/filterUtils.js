@@ -67,7 +67,7 @@ export const contructNewExpressionFromRawdata = (rawExpressionData)=>{
 			}
 		}
 	} else {
-		let selectedElementNames = selectedElements.map((element)=>{return element.name}).join(',')
+		let selectedElementNames = selectedElements.map((element)=>{return element.formValues[0]}).join(',')
 		
 		contentDisplay = targetObject.name  + ' ' + selectedListOperator.name + ' ' + selectedElementNames
 
@@ -92,6 +92,7 @@ export const contructNewExpressionFromRawdata = (rawExpressionData)=>{
 				]
 			}
 		}
+
 	}
 
 	newExpression.expressionIndex = expressionIndex

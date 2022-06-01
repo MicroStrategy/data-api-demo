@@ -3,15 +3,19 @@
 const demoConfig = {
 
     // URL of the REST Server
-    restServerUrl: "https://demo.microstrategy.com/MicroStrategyLibrary/api",
+    restServerUrl: "https://env-279203.customer.cloud.microstrategy.com/MicroStrategyLibrary/api",
+    //restServerUrl: "http://192.168.5.248/MicroStrategyLibrary/api",
+    //restServerUrl: "http://localhost/MicroStrategyLibrary/api",
     //  : "/api",
 
     // Project ID
     projectId: "B7CA92F04B9FAE8D941C3E9B7E0CD754",
-
+    //projectId: "B19DEDCC11D4E0EFC000EB9495D0F44F",
+    
     // Credentials to connect to the MicroStrategy Intelligence Server
-    // username: "guest",  
-    // password: "",
+    username: "mstr",  
+    //password: "",
+    password: "j0CFPMCr57y2",
 
     // Number of items the table will display per page
     itemPerPage: 20,

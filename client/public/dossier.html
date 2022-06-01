@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico?">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <!--
+      manifest.json provides metadata used when your web app is added to the
+      homescreen on Android. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>Integrity Connect Demo of MicroStrategy</title>
+    
+    <style>
+* {box-sizing: border-box}
+body {font-family: "Lato", sans-serif;}
+
+/* Style the tab */
+.tab {
+  float: left;
+  border: 5px solid #204173;
+  background-color: #204173;
+  width: 20%;
+  height: 825px;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  display: block;
+  background-color: #204173;
+  color: white;
+  padding: 18px 12px;
+  width: 100%;
+  border: none;
+  outline: none;
+  text-align: left;
+  line-height: 32px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current "tab button" class */
+.tab button.active {
+  background-color: white;
+  color: #364786;
+}
+
+/* Style the tab content */
+.tabcontent {
+  float: left;
+  padding: 0px 12px;
+  /*border: 1px solid #204173; */
+  width: 80%;
+  border-left: none;
+  height: 1000px;
+}
+</style>
+
+  </head>
+  <body>
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+    <table style="width:100%">
+  <tr><td style="width:20%">
+<img src="./images/left-header.png" alt="Integrity Connect" width="275" height="80" />
+</td><td style="width:80%"> <h2 style="color:#204173; text-align:center" id="h2">Dossier</h2></td></tr>
+</table>
+
+<DIV ID="MicroStrategyDossier0"  style="height:90%; width:98%;position: fixed;">
+<DIV ID="MicroStrategyDossier1"  style="height:100%; width:100%;position: absolute;"></DIV>
+</DIV>
+<script>
+   
+function getQueryStringParameters(url) {
+    var urlParams = {},
+        match,
+        additional = /\+/g, // Regex for replacing additional symbol with a space
+        search = /([^&=]+)=?([^&]*)/g,
+        decode = function(s) {
+            return decodeURIComponent(s.replace(additional, " "));
+        },
+        query;
+    if (url) {
+        if (url.split("?").length > 0) {
+            query = url.split("?")[1];
+        }
+    } else {
+        url = window.location.href;
+        query = window.location.search.substring(1);
+    }
+    while (match = search.exec(query)) {
+        urlParams[decode(match[1])] = decode(match[2]);
+    }
+    return urlParams;
+}
+
+var params = getQueryStringParameters(window.location.href);
+var projectId = params && params.projectId;
+
+var datasetId = params && params.datasetId;
+
+var body_parameter = params && params.body;
+const decodedBody =  JSON.parse(atob(body_parameter)); //
+console.log("decodedData="  + JSON.stringify(decodedBody));
+
+var mstrAuthToken = getCookie('mstr_idtoken');
+
+console.log("mstrAuthToken="  + mstrAuthToken);
+
+
+if(!projectId )
+{
+  projectId = "B7CA92F04B9FAE8D941C3E9B7E0CD754";
+
+}
+
+
+dossierId = "4802DE4C4C18F434C75BFA84EC8A5E4B";
+
+
+
+var baseMicroStrategyRestURL = window.location.origin + "/MicroStrategyLibrary";
+
+baseMicroStrategyRestURL = "https://env-279203.customer.cloud.microstrategy.com/MicroStrategyLibrary";
+
+var projectUrl = baseMicroStrategyRestURL + '/app' + ((projectId != "")? ('/' + projectId) : "");
+var dossierUrl = projectUrl + ((dossierId != "")? ('/' + dossierId) : "") ;
+
+
+
+var loadJS = function(url, implementationCode, wheretoinsert) {
+
+    var scriptTag = document.createElement('script');
+    scriptTag.src = url;
+
+    scriptTag.onload = implementationCode;
+    scriptTag.onreadystatechange = implementationCode;
+
+    wheretoinsert.appendChild(scriptTag);
+};
+
+
+
+
+function getCookie(name) {
+	var pattern = RegExp(name + "=.[^;]*")
+    var matched = document.cookie.match(pattern)
+    if(matched){
+        var cookie = matched[0].split('=')
+        return cookie[1]
+    }
+	
+	// HTTPOnly must be set to false in web.xml
+    return false
+ }
+
+
+ var createInstance = function(){
+
+		var xhr = new XMLHttpRequest();
+		var url = baseMicroStrategyRestURL + "/api/dossiers/" + dossierId+ "/instances"
+        xhr.open("POST", url);
+        xhr.setRequestHeader("X-MSTR-AuthToken", mstrAuthToken);
+        xhr.setRequestHeader("X-MSTR-ProjectID", projectId);
+        xhr.responseType = 'json';
+        xhr.withCredentials = true;
+        xhr.send(null);
+        xhr.onreadystatechange = function() {
+         if (xhr.readyState === 4) {
+        	 if (xhr.status >= 200 && xhr.status < 400) { 
+                var jsonResponse = xhr.response;
+                editInstance(jsonResponse);
+               
+                
+        	 }else
+        	 {
+        		 console.log("MSTR Request failed! Ret=" + xhr.status);
+        	 }
+                
+            }
+        }
+
+}
+
+
+var editInstance = function(instance){
+
+  var xhr = new XMLHttpRequest();
+
+  var url = baseMicroStrategyRestURL + "/api/documents/" + dossierId + "/instances/" +instance.mid + "/manipulations";
+
+
+      xhr.open("POST", url);
+      xhr.setRequestHeader("X-MSTR-AuthToken", mstrAuthToken);
+      xhr.setRequestHeader("X-MSTR-ProjectID", projectId);
+      xhr.setRequestHeader("Content-Type", "application/json");
+
+      xhr.responseType = 'json';
+      xhr.withCredentials = true;
+
+      var body= {"actions":[{"act":"addDataset","did":datasetId,"t":3,"g":0}],"style":{"params":{"treesToRender":3},"name":"RWIVEMojoStyle"}}
+            
+      xhr.send(JSON.stringify(body));
+      xhr.onreadystatechange = function() {
+       if (xhr.readyState === 4) {
+         if (xhr.status >= 200 && xhr.status < 400) { 
+              var jsonResponse = xhr.response;
+              editInstanceAddAttribute(instance);
+             
+              
+         }else
+         {
+           console.log("MSTR Request failed! Ret=" + xhr.status);
+         }
+              
+          }
+      }
+
+}
+var editInstanceAddAttribute = function(instance){
+
+  var url = baseMicroStrategyRestURL + "/api/documents/" + dossierId + "/instances/" +instance.mid + "/manipulations";
+		
+  var xhr = new XMLHttpRequest();
+  //var url = baseMicroStrategyRestURL + "/app/"+ projectId + "/" + dossierId+ "/K53-K45/edit"
+      xhr.open("POST", url);
+      xhr.setRequestHeader("X-MSTR-AuthToken", mstrAuthToken);
+      xhr.setRequestHeader("X-MSTR-ProjectID", projectId);
+      xhr.setRequestHeader("Content-Type", "application/json");
+
+      xhr.responseType = 'json';
+      xhr.withCredentials = true;
+
+      //var body = '{"' +  instance.mid + ':{"published":true,"dda":2,"ddam":1,"mdt":"2022-02-24 13:43:54","did":"02906CAB4899A3A4CB156D8400F90681","st":779,"cbty":1}}';
+      var body ={"actions":[{"act":"updateTemplate","keyContext":"K52","actions":[]}],
+          "partialRetrieval":{"nodes":["K52"],"filters":{"K52":{"data":"","defn":""}}},"style":{"params":{"treesToRender":2},"name":"RWIVEMojoStyle"}};
+
+          // hide TitleBar
+          body.actions.push({"act":"format","unitKey":"K52","unitType":521,"formatType":1,"format":{"FormattingView":{"ShowTitleBar":0,"ShowWidgetTitleBar":0}}})
+          
+          // Add Attributes
+          for (var i = 0; i < decodedBody.requestedObjects.attributes.length; i++) {
+            var attr = decodedBody.requestedObjects.attributes[i];
+            var act =  {"act":"addUnit","unitId":attr.id,"unitType":12,"unitPos":1,"dsId":datasetId,"isFirst":true,"axis":1};
+            body.actions[0].actions.push(act);
+          }
+          
+          // Add Metrics
+          for (var i = 0; i < decodedBody.requestedObjects.metrics.length; i++) {
+            var metric = decodedBody.requestedObjects.metrics[i];
+            var act =  {"act":"addUnit","unitId":metric.id,"unitType":12,"unitPos":1,"dsId":datasetId,"isFirst":true,"axis":2};
+            body.actions[0].actions.push(act);
+          }
+          // Add Attribute Filter
+          for (var i = 0; i < decodedBody.viewFilter.operands.length; i++) {
+            var operand = decodedBody.viewFilter.operands[i];
+            console.log("operand " + JSON.stringify(operand));
+            if(operand.operator == 'In')
+            {
+              var attr =  operand.operands[0];
+              for (var k = 0; k <operand.operands[1].elements.length; k++) {
+                 var element = operand.operands[1].elements[k];
+                 console.log("element " + JSON.stringify(element));
+            }
+            } // if
+          }
+          
+
+          xhr.send(JSON.stringify(body));
+      xhr.onreadystatechange = function() {
+       if (xhr.readyState === 4) {
+         if (xhr.status >= 200 && xhr.status < 400) { 
+              var jsonResponse = xhr.response;
+              startEmbedding(instance);
+             
+              
+         }else
+         {
+           console.log("MSTR Request failed! Ret=" + xhr.status);
+         }
+              
+          }
+      }
+
+}
+
+var saveInstance = function(instance){
+
+  var url = baseMicroStrategyRestURL + "/servlet/taskProc";
+		
+  var xhr = new XMLHttpRequest();
+  //var url = baseMicroStrategyRestURL + "/app/"+ projectId + "/" + dossierId+ "/K53-K45/edit"
+      xhr.open("POST", url);
+      xhr.setRequestHeader("X-MSTR-AuthToken", mstrAuthToken);
+      xhr.setRequestHeader("X-MSTR-ProjectID", projectId);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+      xhr.responseType = 'json';
+      xhr.withCredentials = true;
+
+      var body = "taskId=saveRW&msgID=" + instance.mid + "&folderID=D3C7D461F69C4610AA6BAA5EF51F4125&objName=Test2&objDesc=&saveAsFlags=4&skipRebuild=false&taskEnv=xhr&taskContentType=json&xts=1653989783350&mstrWeb=random"
+            
+      xhr.send(body);
+      xhr.onreadystatechange = function() {
+       if (xhr.readyState === 4) {
+         if (xhr.status >= 200 && xhr.status < 400) { 
+              var jsonResponse = xhr.response;
+              startEmbedding(instance);
+             
+              
+         }else
+         {
+           console.log("MSTR Request failed! Ret=" + xhr.status);
+         }
+              
+          }
+      }
+
+}
+
+		 
+var startEmbedding = function(instance) {
+   	
+   	
+    var filters;
+    
+    //if(filter_parameter) 
+    //{
+    //	filters = JSON.parse(filter_parameter);
+    //}
+
+   	microstrategy.dossier.create({
+       	placeholder: document.getElementById("MicroStrategyDossier1")
+        ,instance:instance
+       	,url: dossierUrl
+      	,enableResponsive: true
+        ,filterFeature: {
+ 			      enabled: true,
+ 			      edit: true,
+ 			      summary: true
+ 		   }
+      	,navigationBar: {
+            enabled: false
+        }
+       //,filters: decodedBody.viewFilter
+    	  
+   	}).then(function(dossier) {
+   		
+       console.log("dossier loaded");
+
+       var filterDataObj = {};
+       var filterInfoObj = {};
+       filterInfoObj.key = availableFilterKey;
+       filterDataObj.selections = selections;
+       filterDataObj.filterInfo = filterInfoObj;
+       dossier.filterSelectMultiAttributes(filterDataObj);
+
+       	[].forEach.call( document.querySelectorAll('iframe'), 
+    		   function  fn(iFrame){ 
+	    	   	   iFrame.onload =  function() {
+	    	    	 console.log('Frame   loaded');
+	    	    	 createInstance();
+	    	    	}
+	    	   });
+        
+   	});
+
+
+}
+
+if(!projectId || !dossierId)
+{
+   alert("Please specify projectId and dossierId");
+}
+else 
+{
+	loadJS('embeddinglib.js', createInstance, document.head);
+}
+
+
+
+</script>
+
+
+  </body>
+</html>

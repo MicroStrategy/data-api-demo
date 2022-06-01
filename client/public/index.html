@@ -19,22 +19,93 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>MicroStrategy REST API Data Demo</title>
+    <title>Integrity Connect Demo of MicroStrategy</title>
+    
+    <style>
+* {box-sizing: border-box}
+body {font-family: "Lato", sans-serif;}
+
+/* Style the tab */
+.tab {
+  float: left;
+  border: 5px solid #204173;
+  background-color: #204173;
+  width: 20%;
+  height: 825px;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  display: block;
+  background-color: #204173;
+  color: white;
+  padding: 18px 12px;
+  width: 100%;
+  border: none;
+  outline: none;
+  text-align: left;
+  line-height: 32px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current "tab button" class */
+.tab button.active {
+  background-color: white;
+  color: #364786;
+}
+
+/* Style the tab content */
+.tabcontent {
+  float: left;
+  padding: 0px 12px;
+  /*border: 1px solid #204173; */
+  width: 80%;
+  border-left: none;
+  height: 1000px;
+}
+</style>
+
   </head>
   <body>
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
+    <table style="width:100%">
+<tr><td style="width:20%">
+<img src="./images/left-header.png" alt="Integrity Connect" width="275" height="80" />
+</td><td style="width:80%"> <h2 style="color:#204173; text-align:center" id="h2">Welcome!</h2></td></tr>
+</table>
+
+<script src="my_script.js"></script>
+
+<div class="tab">
+  <button class="tablinks" onclick="openTab(event, 'Home')"><img src="./images/home.png" style="float:left; padding-right: 10px;" alt="Home" width="30" height="30" >&#160 Home</button>
+  <button class="tablinks" onclick="openTab(event, 'Agents')"><img src="./images/agents.png" style="float:left; padding-right: 10px;" alt="Agents" width="30" height="30" >&#160 Agents</button>
+  <button class="tablinks" onclick="openTab(event, 'Insured')"><img src="./images/insured.png" style="float:left; padding-right: 10px;" alt="Insured" width="30" height="30" >&#160 Insured</button>
+  <button class="tablinks" onclick="openTab(event, 'Tasks')"><img src="./images/tasks.png" style="float:left; padding-right: 10px;" alt="Tasks" width="30" height="30" >&#160 Tasks</button>
+  <button class="tablinks" onclick="openTab(event, 'Documents')"><img src="./images/documents.png" style="float:left; padding-right: 10px;" alt="Documents" width="30" height="30" >&#160 Documents</button>
+  <button class="tablinks" onclick="openTab(event, 'Dialer')"><img src="./images/dialer.png" style="float:left; padding-right: 10px;" alt="Dialer" width="30" height="30" >&#160 Dialer</button>
+  <button class="tablinks" onclick="openTab(event, 'Workflow')"><img src="./images/workflow.png" style="float:left; padding-right: 10px;" alt="Workflow" width="30" height="30" >&#160 Workflow</button>
+  <button class="tablinks" onclick="openTab(event, 'Leads')"><img src="./images/leads.png" style="float:left; padding-right: 10px;" alt="Leads" width="30" height="30" >&#160 Leads</button>
+  <button class="tablinks" onclick="openTab(event, 'Supplies')"><img src="./images/supplies.png" style="float:left; padding-right: 10px;" alt="Supplies" width="30" height="30" >&#160 Supplies</button>
+  <button class="tablinks" onclick="openTab(event, 'Reports')"><img src="./images/graph.png" style="float:left; padding-right: 10px;" alt="Reports" width="30" height="30" >&#160 Reports</button>
+  <button class="tablinks" onclick="openTab(event, 'ReportBuilder')" id="defaultOpen"><img src="./images/reportbuilder.png" style="float:left; padding-right: 10px;" alt="Report Builder" width="30" height="30" >&#160 Report Builder</button>
+  <button class="tablinks" onclick="openTab(event, 'Admin')"><img src="./images/admin.png" style="float:left; padding-right: 10px;" alt="Administration" width="30" height="30" >&#160 Administration</button>
+
+</div>
+
+<div id="ReportBuilder" class="tabcontent">
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+</div>
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
+
   </body>
 </html>

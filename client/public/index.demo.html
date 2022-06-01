@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {box-sizing: border-box}
+body {font-family: "Lato", sans-serif;}
+
+/* Style the tab */
+.tab {
+  float: left;
+  border: 5px solid #204173;
+  background-color: #204173;
+  width: 20%;
+  height: 825px;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  display: block;
+  background-color: #204173;
+  color: white;
+  padding: 18px 12px;
+  width: 100%;
+  border: none;
+  outline: none;
+  text-align: left;
+  line-height: 32px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current "tab button" class */
+.tab button.active {
+  background-color: white;
+  color: #364786;
+}
+
+/* Style the tab content */
+.tabcontent {
+  float: left;
+  padding: 0px 12px;
+  /*border: 1px solid #204173; */
+  width: 80%;
+  border-left: none;
+  height: 1000px;
+}
+</style>
+</head>
+<body>
+<table style="width:100%">
+<tr><td style="width:20%">
+<img src="./images/left-header.png" alt="Integrity Connect" width="275" height="80">
+</td><td style="width:80%"> <h2 style="color:#204173; text-align:center">Welcome!</h2></td></tr>
+</table>
+
+
+<div class="tab">
+  <button class="tablinks" onclick="openTab(event, 'Home')"><img src="./images/home.png" style="float:left" alt="Home" width="30" height="30" padding-right: 10px;">&#160 Home</button>
+  <button class="tablinks" onclick="openTab(event, 'Agents')"><img src="./images/agents.png" style="float:left" alt="Agents" width="30" height="30" padding-right: 10px;">&#160 Agents</button>
+  <button class="tablinks" onclick="openTab(event, 'Insured')"><img src="./images/insured.png" style="float:left" alt="Insured" width="30" height="30" padding-right: 10px;">&#160 Insured</button>
+  <button class="tablinks" onclick="openTab(event, 'Tasks')"><img src="./images/tasks.png" style="float:left" alt="Tasks" width="30" height="30" padding-right: 10px;">&#160 Tasks</button>
+  <button class="tablinks" onclick="openTab(event, 'Documents')"><img src="./images/documents.png" style="float:left" alt="Documents" width="30" height="30" padding-right: 10px;">&#160 Documents</button>
+  <button class="tablinks" onclick="openTab(event, 'Dialer')"><img src="./images/dialer.png" style="float:left" alt="Dialer" width="30" height="30" padding-right: 10px;">&#160 Dialer</button>
+  <button class="tablinks" onclick="openTab(event, 'Workflow')"><img src="./images/workflow.png" style="float:left" alt="Workflow" width="30" height="30" padding-right: 10px;">&#160 Workflow</button>
+  <button class="tablinks" onclick="openTab(event, 'Leads')"><img src="./images/leads.png" style="float:left" alt="Leads" width="30" height="30" padding-right: 10px;">&#160 Leads</button>
+  <button class="tablinks" onclick="openTab(event, 'Supplies')"><img src="./images/supplies.png" style="float:left" alt="Supplies" width="30" height="30" padding-right: 10px;">&#160 Supplies</button>
+  <button class="tablinks" onclick="openTab(event, 'Reports')"><img src="./images/graph.png" style="float:left" alt="Reports" width="30" height="30" padding-right: 10px;">&#160 Reports</button>
+  <button class="tablinks" onclick="openTab(event, 'ReportBuilder')" id="defaultOpen"><img src="./images/reportbuilder.png" style="float:left" alt="Report Builder" width="30" height="30" padding-right: 10px;">&#160 Report Builder</button>
+  <button class="tablinks" onclick="openTab(event, 'Admin')"><img src="./images/admin.png" style="float:left" alt="Administration" width="30" height="30" padding-right: 10px;">&#160 Administration</button>
+</div>
+
+<div id="ReportBuilder" class="tabcontent">
+  <div id="dossierContainer"></div>
+</div>
+
+<script src="https://env-279203.customer.cloud.microstrategy.com/MicroStrategyLibrary/javascript/embeddinglib.js"></script>
+<script type="text/javascript">	
+
+function openTab(evt, tabName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(tabName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+
+/* First, we need to load the JavaScript Library for the MicroStrategy Embedding SDK. */
+/* These are the parameters necessary for connecting to the Dossier ----------------------------- */
+baseRestURL = "https://env-279203.customer.cloud.microstrategy.com/MicroStrategyLibrary";
+projectID   = "B7CA92F04B9FAE8D941C3E9B7E0CD754";
+dossierID   = "D5B66E0E3F4C981A42F6C89AEA29D67B";
+/* since in this case we want dossier to load automatically for everyone we will use a demo user */
+username    = "embed";
+password    = "mstr1234";
+/* End of configuration parameters  ------------------------------------------------------------- */
+
+/* Generate the complete URL for the Dossier */
+var dossierUrl = baseRestURL + '/app/' + projectID + '/' + dossierID;
+
+/* Populate div with Dossier: */
+microstrategy.dossier.create({
+	/* This is the document's <div> container where the Dossier should be placed. */
+	placeholder: document.getElementById("dossierContainer"),
+	url: dossierUrl,
+	enableResponsive: true,
+	navigationBar: {
+		enabled: true,
+           	gotoLibrary: false,
+            	title: false,
+            	toc: false,
+            	reset: false,
+            	reprompt: false,
+           	share: true,
+            	comment: false,
+            	notification: false,
+            	filter: true,
+            	options: false,
+            	search: false,
+            	bookmark: true,
+           	edit: false
+          },
+  	filterFeature: {
+    		enabled: true,
+    		edit: true,
+    		summary: false
+  	 },
+        shareFeature: {
+            	enabled: true,
+            	invite: false,
+            	link: true,
+            	email: false,
+            	export: true,
+            	download: false,
+            	shareDossier: true,
+            	subscribe: true
+          },
+	/* And parameters for the user authentication. */
+	/* In case we didn't want the dossier to load automatically for everyone */
+	/* and wanted the user to log in we would skip that part. */
+	containerHeight: "800px",
+        containerWidth: "800px",
+	enableCustomAuthentication: true,
+    	readonly: true,
+	customAuthenticationType: microstrategy.dossier.CustomAuthenticationType.AUTH_TOKEN,
+	getLoginToken: login
+
+}).then(function(dossier) {
+	/* Code to execute after the Dossier has finished loading... */
+})
+
+function login() {
+	/* Prepare some parameters for login request */
+	var options = {
+		method: 'POST',
+		credentials: 'include', /* include cookie */
+		mode: 'cors', /* set as CORS mode for cross origin resource sharing */
+		headers: {'Content-Type': 'application/json'},
+		body: JSON.stringify({
+		/* loginMode: 8 */ /* Login as guest user. */
+		"loginMode": 1, /* standard login mode */
+		"username": username,
+		"password": password
+		})
+	};
+
+	/* The actual login takes place here */
+	return fetch(baseRestURL + '/api/auth/login', options).then(function (response) {
+		if (response.ok) {
+		return response.headers.get('x-mstr-authToken');
+		} else {
+		response.json().then(function(json) {
+			console.log(json);
+		});
+		}
+	}).catch(function (error) {
+		console.log(error);
+	});
+};
+</script>
+   
+</body>
+</html> 

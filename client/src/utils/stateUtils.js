@@ -37,7 +37,7 @@ export const getCreateInstancePostBody = (state) => {
   const attributeAllSelect = Object.keys(attributesUnselect).length === 0
   const metricAllSelect = Object.keys(metricsUnselect).length === 0
   
-  if (!attributeAllSelect || !metricAllSelect){
+  //if (!attributeAllSelect || !metricAllSelect){
     const allAttributes = getCurrentDatasetAttributes(state)
     const allMetrics = getCurrentDatasetMetrics(state)
 
@@ -49,7 +49,7 @@ export const getCreateInstancePostBody = (state) => {
         id: metric.id
       })).filter(metric => !(metric.id in metricsUnselect))
     }    
-  }
+  //}
   
   if(state.filters&&state.filters.viewFilter.expressions){
     postBody.viewFilter = Object.assign({},state.filters.viewFilter.expressions)
