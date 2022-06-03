@@ -39,10 +39,10 @@ export const getObjectDataAsync = async (dispatch, getState, pageIdx) => {
 	return await getObjectData(dataset, projectId, instanceId, pageIdx, dispatch)
 }
 
-export const getAttributeElementsAsync = async (dispatch, getState, attributeId) => {
+export const getAttributeElementsAsync = async (dispatch, getState, datasetId,attributeId) => {
   const state = getState()
   const projectId = getProjectId(state)
-  const dataset = getCurrentDataset(state)
-  const instanceId = getInstanceId(state)
-  return await getAttributeElements(projectId, dataset, instanceId, attributeId, dispatch)
+  //const dataset = getCurrentDataset(state)
+  //const instanceId = getInstanceId(state)
+  return await getAttributeElements(projectId, datasetId, attributeId, dispatch)
 }

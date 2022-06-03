@@ -33,7 +33,7 @@ const allSubReducers = combineReducers({
 })
 
 const rootReducer = (state, action) => {
-    // console.log('root state:', state)
+     console.log('root state:', state)
     let datasetList = {}
     let sortingData = []
     switch(action.type){
@@ -58,7 +58,7 @@ const rootReducer = (state, action) => {
         datasetList = {
             data: action.payload, 
             ui: {
-                selectDatasetIndex: 0
+                unselect: {}
             }
         }
         sortingData = sortingDataTransform(action.payload[0].definition)

@@ -21,8 +21,34 @@ function mapStateToProps(state, props) {
     const isViewFilter = props.isViewFilter || false
  
 
-    let currentDataset = getCurrentDataset(state)
-    let availableObjects = [...currentDataset.definition.availableObjects.attributes,...currentDataset.definition.availableObjects.metrics]
+    let currentDatasets = getCurrentDataset(state)
+
+
+    if(currentDatasets === null )return null;
+  
+    let availableObjects = []
+  
+    for(var i=0;i<currentDatasets.length;i++)
+    {
+
+        for(var k=0;k<currentDatasets[i].definition.availableObjects.attributes.length;k++)
+        {
+          currentDatasets[i].definition.availableObjects.attributes[k].dataset = currentDatasets[i];
+          availableObjects.push(currentDatasets[i].definition.availableObjects.attributes[k]);
+    
+        }
+        for(var k=0;k<currentDatasets[i].definition.availableObjects.metrics.length;k++)
+        {
+          currentDatasets[i].definition.availableObjects.metrics[k].dataset = currentDatasets[i];
+          availableObjects.push(currentDatasets[i].definition.availableObjects.metrics[k]);
+    
+        }
+        
+        //availableObjects.push(currentDatasets[i].definition.availableObjects.attributes);
+        //availableObjects.push(currentDatasets[i].definition.availableObjects.metrics);
+    }
+  
+    //let availableObjects = [...currentDataset.definition.availableObjects.attributes,...currentDataset.definition.availableObjects.metrics]
 
     if(!isViewFilter){ //metricLimit only support on metric object 
         availableObjects = availableObjects.filter((availableObject)=>{return availableObject.type==='metric'})

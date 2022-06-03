@@ -19,7 +19,7 @@ export const applyCondition = () => {
 
     const state = getState()
     const projectId = getProjectId(state)
-    const dataset = getCurrentDataset(state)
+    const currentDatasets = getCurrentDataset(state)
     const body = getCreateInstancePostBody(state)
     //const idToken = await createIdentityToken(dispatch)
 
@@ -28,8 +28,21 @@ export const applyCondition = () => {
      let expires = "expires="+ d.toUTCString();
 
     document.cookie =  "mstr_idtoken=" + getAccessToken() + ";" + expires + ";path=/";
+    var datasetIds = [];
 
-    window.open("dossier.html?projectId=" + projectId  + "&datasetId=" + dataset.id + "&datasetType=" + dataset.subtype + "&body=" +btoa(JSON.stringify(body)),'myDossier')
+    for(var i=0;i<currentDatasets.length;i++)
+   {
+     var ds = {};
+     ds.id = currentDatasets[i].id;
+     ds.name = currentDatasets[i].name;
+     ds.subtype = currentDatasets[i].subtype;
+     ds.projectId = currentDatasets[i].projectId;
+    datasetIds.push(ds)
+   }
+   console.log(JSON.stringify(datasetIds));
+   var str = JSON.stringify(datasetIds);
+   var b64 = btoa(str);
+    window.open("dossier.html?projectId=" + projectId  + "&datasets=" + b64  + "&body=" +btoa(JSON.stringify(body)),'myDossier')
 
 
 

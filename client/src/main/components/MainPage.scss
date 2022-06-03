@@ -69,8 +69,13 @@ html, body, #root {
         }
 
         .QP__conditions__viewFilters, .QP__conditions__metrics {
+          min-height: 100px;
+          height: 15%;
+        }
+        .QP__action {
           min-height: 162px;
-          height: 23%;
+          height: 20%;
+          margin-top:10px;
         }
       }
 
@@ -98,6 +103,7 @@ html, body, #root {
     .QP__context__right {
       float: left;
       height: 100%;
+      background-color: #f4f4f4;
 
       .QP__results{
         height: 50%;

@@ -144,9 +144,9 @@ export const getDatasetDefinition = async (dataset, projectID, dispatch) => {
     }
 }
 
-export const getAttributeElements = async (projectId, dataset, instanceId, attributeId, dispatch) => {
+export const getAttributeElements = async (projectId, datasetId, attributeId, dispatch) => {
     //const url = `/cubes/${dataset.id}/instance/${instanceId}/attributes/${attributeId}/elements`
-    const url = `/cubes/${dataset.id}/attributes/${attributeId}/elements`
+    const url = `/cubes/${datasetId}/attributes/${attributeId}/elements`
     return await requestRetry(url, {
         headers: {
             [X_MSTR_PROJECT_ID]: projectId

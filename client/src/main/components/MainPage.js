@@ -24,13 +24,12 @@ const MainPage = ({
             </Alert>}
             <div className="QP__context">
                 <div className="QP__context__left">
-                    <DatasetDropListContainer />
+                    <div className="QP__conditions__title">Datasets</div>
+                    <div className="QP__attributes-metrics-area__list">
+                        <DatasetDropListContainer />
+                    </div>
+
                     { !dataIsEmpty && (<div className="QP__conditions">
-                        <AttributeMetricArea />
-                    </div>)}                    
-                </div>
-                <div className="QP__context__right"> 
-                { !dataIsEmpty && (<div className="QP__conditions">
                         <div className="QP__conditions__viewFilters">
                             <div className="QP__conditions__title">View Filters</div>
                             <FilterSummaryContainer isViewFilter={true}/>    
@@ -40,10 +39,17 @@ const MainPage = ({
                             <FilterSummaryContainer isViewFilter={false}/>
                         </div>
                         <SortingListGroupContainer />                    
-                    </div>)}                    
-                    { !dataIsEmpty && (<div className="QP__apply-bar">
+                        <div className="QP__action">
                         <Button className="QP__apply-bar__button" onClick={() => onApplyCondition()}>Apply</Button>
-                    </div>)}
+                        </div>
+                    </div>)
+                    }                    
+
+                </div>
+                <div className="QP__context__right"> 
+                    { !dataIsEmpty && (<div className="QP__conditions">
+                        <AttributeMetricArea />
+                    </div>)}                    
                 </div>
             </div>
         </div>

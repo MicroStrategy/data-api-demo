@@ -60,3 +60,26 @@ export const createInstanceAndRefreshTable = async (dispatch, getState, pageInde
 	})
 	return data
 }
+
+export const toggleDatasetSelection = (id) => {
+
+	return(dispatch)=> {
+		dispatch({
+		type: DATASET_LIST_ACTIONS.TOGGLE_DATASET_SELECTION,
+		payload: id
+	})
+ }
+}
+export const toggleDatasetAllSelection = (select, datasets) => {
+
+	return(dispatch)=> {
+		dispatch({
+		type: DATASET_LIST_ACTIONS.TOGGLE_ALL_DATASETS,
+		payload: {
+			datasets,
+			select
+		}
+	})
+ }
+
+}

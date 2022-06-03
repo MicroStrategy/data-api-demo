@@ -10,21 +10,22 @@ import {CONSTANTS, FILTER_ACTIONS, MAIN_UI_ACTIONS, RESULT_ACTIONS} from '../../
 // 	selectAttributeForm: availableObjects[this.state.selectedIndex].forms[this.state.selectFormIndex],
 // 	constant: this.state.constant
 // }
-export const getAttributeElement = (attributeId) => {
+export const getAttributeElement = (datasetId,attributeId) => {
 	return (dispatch, getState) => {
-		getAttributeElementWithRetry(dispatch, getState, attributeId).catch(
+		getAttributeElementWithRetry(dispatch, getState,datasetId, attributeId).catch(
 			httpErrorHandling(dispatch, MAIN_UI_ACTIONS.DISPLAY_ERROR_MSG))
 	}
 }
 
 
-const getAttributeElementWithRetry = async (dispatch, getState, attributeId) => {
+const getAttributeElementWithRetry = async (dispatch, getState, datasetId,attributeId) => {
 	for (let i = 0; i < CONSTANTS.MAX_TRY_COUNT; i++) {
 		try {
-			const elements = await getAttributeElementsAsync(dispatch, getState, attributeId)
+			const elements = await getAttributeElementsAsync(dispatch, getState,datasetId, attributeId)
 			dispatch({
 				type: FILTER_ACTIONS.MODIFY_ATTRIBUTE_ELEMENTS,
 				payload: {
+					datasetId,
 					attributeId,
 					data: elements
 				}

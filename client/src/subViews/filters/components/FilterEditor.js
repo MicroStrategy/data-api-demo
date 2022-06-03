@@ -336,7 +336,7 @@ class FilterEditor extends React.Component {
         isAttributeSelected = (availableObjects[selectedIndex].type || "").toLowerCase() === "attribute" ? true : false
 
         if (isAttributeSelected && (changingToSelectInList || !this.state.isQualification) && !availableObjects[selectedIndex].elements){
-            this.props.onGetAttributeElement(availableObjects[selectedIndex].id)
+            this.props.onGetAttributeElement(availableObjects[selectedIndex].dataset.id,availableObjects[selectedIndex].id)
         }
     }
 

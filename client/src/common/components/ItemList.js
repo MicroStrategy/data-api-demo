@@ -30,7 +30,7 @@ const ItemList = ({
             <input readOnly type="checkbox" checked={!(item.id in unselect)}/>
             <div className={`QP__item-icon ${!(item.id in unselect)? "qp-multi-check-icon" : "qp-multi-uncheck-icon"}`}/>
             <div className={`QP__item-category-icon ${categoryIconClass}`} />
-            <div className="QP__item-name">{item.name}</div>
+            <div className="QP__item-name">{item.dataset.name} - {item.name}</div>
           </div>))
       }
       </div>

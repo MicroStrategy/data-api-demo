@@ -80,7 +80,7 @@ body {font-family: "Lato", sans-serif;}
     <table style="width:100%">
   <tr><td style="width:20%">
 <img src="./images/left-header.png" alt="Integrity Connect" width="275" height="80" />
-</td><td style="width:80%"> <h2 style="color:#204173; text-align:center" id="h2">Dossier</h2></td></tr>
+</td><td style="width:80%"> <h2 style="color:#204173; text-align:center" id="h2">Dossier</h2> <div onclick="save()">Save</div></td></tr>
 </table>
 
 <DIV ID="MicroStrategyDossier0"  style="height:90%; width:98%;position: fixed;">
@@ -114,7 +114,8 @@ function getQueryStringParameters(url) {
 var params = getQueryStringParameters(window.location.href);
 var projectId = params && params.projectId;
 
-var datasetId = params && params.datasetId;
+var datasets_parameter = params && params.datasets;
+const datasets =  JSON.parse(atob(datasets_parameter)); //
 
 var body_parameter = params && params.body;
 const decodedBody =  JSON.parse(atob(body_parameter)); //
@@ -157,7 +158,11 @@ var loadJS = function(url, implementationCode, wheretoinsert) {
 };
 
 
-
+function save()
+{
+  var inst = getCookie("mstr_instance");
+  saveInstance(inst); 
+}
 
 function getCookie(name) {
 	var pattern = RegExp(name + "=.[^;]*")
@@ -186,6 +191,12 @@ function getCookie(name) {
          if (xhr.readyState === 4) {
         	 if (xhr.status >= 200 && xhr.status < 400) { 
                 var jsonResponse = xhr.response;
+                const d = new Date();
+                d.setTime(d.getTime() + (5*60*1000));
+                let expires = "expires="+ d.toUTCString();
+
+                document.cookie =  "mstr_instance=" + jsonResponse.mid + ";" + expires + ";path=/";
+
                 editInstance(jsonResponse);
                
                 
@@ -214,8 +225,12 @@ var editInstance = function(instance){
 
       xhr.responseType = 'json';
       xhr.withCredentials = true;
-
-      var body= {"actions":[{"act":"addDataset","did":datasetId,"t":3,"g":0}],"style":{"params":{"treesToRender":3},"name":"RWIVEMojoStyle"}}
+      var body= {"actions":[],"style":{"params":{"treesToRender":3},"name":"RWIVEMojoStyle"}}
+      for (var i = 0; i <datasets.length; i++) {
+        var dataset = datasets[i];
+        var act = {"act":"addDataset","did":dataset.id,"t":3,"g":0};
+        body.actions.push(act);
+        }
             
       xhr.send(JSON.stringify(body));
       xhr.onreadystatechange = function() {
@@ -223,6 +238,7 @@ var editInstance = function(instance){
          if (xhr.status >= 200 && xhr.status < 400) { 
               var jsonResponse = xhr.response;
               editInstanceAddAttribute(instance);
+              //saveInstance(instance);
              
               
          }else
@@ -237,18 +253,18 @@ var editInstance = function(instance){
 var editInstanceAddAttribute = function(instance){
 
   var url = baseMicroStrategyRestURL + "/api/documents/" + dossierId + "/instances/" +instance.mid + "/manipulations";
-		
+  //var url = baseMicroStrategyRestURL + "/servlet/taskProc";
+
   var xhr = new XMLHttpRequest();
-  //var url = baseMicroStrategyRestURL + "/app/"+ projectId + "/" + dossierId+ "/K53-K45/edit"
       xhr.open("POST", url);
       xhr.setRequestHeader("X-MSTR-AuthToken", mstrAuthToken);
       xhr.setRequestHeader("X-MSTR-ProjectID", projectId);
       xhr.setRequestHeader("Content-Type", "application/json");
+      //xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
       xhr.responseType = 'json';
       xhr.withCredentials = true;
 
-      //var body = '{"' +  instance.mid + ':{"published":true,"dda":2,"ddam":1,"mdt":"2022-02-24 13:43:54","did":"02906CAB4899A3A4CB156D8400F90681","st":779,"cbty":1}}';
       var body ={"actions":[{"act":"updateTemplate","keyContext":"K52","actions":[]}],
           "partialRetrieval":{"nodes":["K52"],"filters":{"K52":{"data":"","defn":""}}},"style":{"params":{"treesToRender":2},"name":"RWIVEMojoStyle"}};
 
@@ -258,14 +274,14 @@ var editInstanceAddAttribute = function(instance){
           // Add Attributes
           for (var i = 0; i < decodedBody.requestedObjects.attributes.length; i++) {
             var attr = decodedBody.requestedObjects.attributes[i];
-            var act =  {"act":"addUnit","unitId":attr.id,"unitType":12,"unitPos":1,"dsId":datasetId,"isFirst":true,"axis":1};
+            var act =  {"act":"addUnit","unitId":attr.id,"unitType":12,"unitPos":1,"dsId":attr.ds,"isFirst":true,"axis":1};
             body.actions[0].actions.push(act);
           }
           
           // Add Metrics
           for (var i = 0; i < decodedBody.requestedObjects.metrics.length; i++) {
             var metric = decodedBody.requestedObjects.metrics[i];
-            var act =  {"act":"addUnit","unitId":metric.id,"unitType":12,"unitPos":1,"dsId":datasetId,"isFirst":true,"axis":2};
+            var act =  {"act":"addUnit","unitId":metric.id,"unitType":12,"unitPos":1,"dsId":metric.ds,"isFirst":true,"axis":2};
             body.actions[0].actions.push(act);
           }
           // Add Attribute Filter
@@ -275,14 +291,181 @@ var editInstanceAddAttribute = function(instance){
             if(operand.operator == 'In')
             {
               var attr =  operand.operands[0];
+              var nodeKey = "ANODE"+i;
+              var ctlKey = "ACTRLKEY"+i;
+             var act = {
+               "act":"addControl",
+               "parentKey":"K49",
+               "isUC":true,
+               "unitType":12,
+               "nodeKey":nodeKey,
+               "ctlKey":ctlKey,
+               "unitId":attr.id,
+               "targetKeys":[
+                  "K33"
+               ],
+               "ctlType":1,
+               "gpType":1
+            };
+             
+               body.actions.push(act);
+   
+             
+  
+
+          }
+
+          }
+          for (var i = 0; i < Object.keys(decodedBody.metricLimits).length; i++) {
+             var metricId = Object.keys(decodedBody.metricLimits)[i];
+             console.log(metricId);
+
+             var metric = decodedBody.metricLimits[metricId].operands[0];
+
+             
+             console.log("metric " + JSON.stringify(metric));
+             var nodeKey = "MNODE"+i;
+             var ctlKey = "MCTRLKEY"+i;
+
+          var act3 = {
+            "act":"addControl",
+            "parentKey":"K49",
+            "nodeKey":nodeKey,
+            "ctlKey":ctlKey,
+            "isUC":true,
+            "unitType":4,
+            "unitId":metricId,
+            "targetKeys":[
+               "K33"
+            ],
+            "ctlType":1,
+            "gpType":1
+       
+          }
+          body.actions.push(act3);
+
+
+
+        }
+
+          /*
+          var param = encodeURI(JSON.stringify(body));
+          param = param.replaceAll(":","%3A");
+          param = param.replaceAll(",","%2C");
+          var body2 = "taskId=mojoRWManipulation&msgID=" + instance.mid + "&stateID=-1&params=" + param
+           + "&taskEnv=xhr&taskContentType=json&xts=1653989783350&mstrWeb=random"
+          */
+          xhr.send(JSON.stringify(body));
+      xhr.onreadystatechange = function() {
+       if (xhr.readyState === 4) {
+         if (xhr.status >= 200 && xhr.status < 400) { 
+              var jsonResponse = xhr.response;
+              updateInstanceAddAttribute(instance);
+              //startEmbedding(instance);
+              
+         }else
+         {
+           console.log("MSTR Request failed! Ret=" + xhr.status);
+         }
+              
+          }
+      }
+
+}
+
+var updateInstanceAddAttribute = function(instance){
+
+  var url = baseMicroStrategyRestURL + "/api/documents/" + dossierId + "/instances/" +instance.mid + "/manipulations";
+  //var url = baseMicroStrategyRestURL + "/servlet/taskProc";
+
+  var xhr = new XMLHttpRequest();
+      xhr.open("POST", url);
+      xhr.setRequestHeader("X-MSTR-AuthToken", mstrAuthToken);
+      xhr.setRequestHeader("X-MSTR-ProjectID", projectId);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      //xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+      xhr.responseType = 'json';
+      xhr.withCredentials = true;
+
+      var body ={actions:[]};
+
+          
+          // Add Attribute Filter
+          for (var i = 0; i < decodedBody.viewFilter.operands.length; i++) {
+            var operand = decodedBody.viewFilter.operands[i];
+            console.log("operand " + JSON.stringify(operand));
+            if(operand.operator == 'In')
+            {
+              var attr =  operand.operands[0];
+              var nodeKey = "ANODE"+i;
+              var ctlKey = "ACTRLKEY"+i;
               for (var k = 0; k <operand.operands[1].elements.length; k++) {
                  var element = operand.operands[1].elements[k];
                  console.log("element " + JSON.stringify(element));
-            }
+                 var elemList = []
+                 var  element_id = element.id.split("\:");
+                 console.log("element " + JSON.stringify(element_id));
+                 elemList.push("h" + element_id[1] + ";" +  element_id[0] + ";"+ element.formValues[0]);
+                 var act2 =   {
+                  "act":"setSelectorElements",
+                  "keyContext": "1\u001e" + nodeKey + "\u001e" + ctlKey,
+                  "ctlKey":ctlKey,
+                  "elemList":elemList.join(","), 
+                  "isVisualization":false,
+                  "include":true,
+                  "tks":"K33"
+              }
+              body.actions.push(act2);
+  
+
+                }
+           // if(elemList.length > 0)
+            {
+              
+          }
+
             } // if
           }
-          
+          for (var i = 0; i < Object.keys(decodedBody.metricLimits).length; i++) {
+             var metricId = Object.keys(decodedBody.metricLimits)[i];
+             console.log(metricId);
 
+             var metric = decodedBody.metricLimits[metricId].operands[0];
+
+             
+             console.log("metric " + JSON.stringify(metric));
+             var nodeKey = "MNODE"+i;
+             var ctlKey = "MCTRLKEY"+i;
+
+
+
+          var act4 = {
+            "act":"setSelectorExpression",
+            "keyContext": "1\u001e" + nodeKey + "\u001e" + ctlKey,
+            "ctlType":1,
+            "objId":metricId,
+            "objType":4,
+            "expFunction":11,
+            "expFunctionType":1,
+            "include":true,
+            "qt":0,
+            "unset":false,
+            "changeQual":true,
+            "expConstants":"100",
+            "dataType":5
+         }
+         body.actions.push(act4);
+
+        }
+
+          /*
+          var param = encodeURI(JSON.stringify(body));
+          param = param.replaceAll(":","%3A");
+          param = param.replaceAll(",","%2C");
+          var body2 = "taskId=mojoRWManipulation&msgID=" + instance.mid + "&stateID=-1&params=" + param
+           + "&taskEnv=xhr&taskContentType=json&xts=1653989783350&mstrWeb=random"
+          */
           xhr.send(JSON.stringify(body));
       xhr.onreadystatechange = function() {
        if (xhr.readyState === 4) {
@@ -294,6 +477,7 @@ var editInstanceAddAttribute = function(instance){
          }else
          {
            console.log("MSTR Request failed! Ret=" + xhr.status);
+           //startEmbedding(instance);
          }
               
           }
@@ -314,15 +498,18 @@ var saveInstance = function(instance){
 
       xhr.responseType = 'json';
       xhr.withCredentials = true;
-
-      var body = "taskId=saveRW&msgID=" + instance.mid + "&folderID=D3C7D461F69C4610AA6BAA5EF51F4125&objName=Test2&objDesc=&saveAsFlags=4&skipRebuild=false&taskEnv=xhr&taskContentType=json&xts=1653989783350&mstrWeb=random"
+      const d = new Date();
+      
+      var name = "New Dossier "  + d.getTime();
+      
+      var body = "taskId=saveRW&msgID=" + instance + "&folderID=D3C7D461F69C4610AA6BAA5EF51F4125&objName=" +name+ "&objDesc=&saveAsFlags=4&skipRebuild=false&taskEnv=xhr&taskContentType=json&xts=1653989783350&mstrWeb=random"
             
       xhr.send(body);
       xhr.onreadystatechange = function() {
        if (xhr.readyState === 4) {
          if (xhr.status >= 200 && xhr.status < 400) { 
               var jsonResponse = xhr.response;
-              startEmbedding(instance);
+              alert("Save as " + name);
              
               
          }else
@@ -356,21 +543,31 @@ var startEmbedding = function(instance) {
  			      edit: true,
  			      summary: true
  		   }
-      	,navigationBar: {
-            enabled: false
+      	,
+        
+        navigationBar: {
+          edit: false,
+          enabled: true,
+          gotoLibrary: false,
+          title: false,
+          toc: false,
+          reset: false,
+          reprompt: false,
+          share: true,
+          comment: false,
+          notification: false,
+          filter: true,
+          options: false,
+          search: false,
+          bookmark: false
         }
+        
        //,filters: decodedBody.viewFilter
     	  
    	}).then(function(dossier) {
    		
        console.log("dossier loaded");
 
-       var filterDataObj = {};
-       var filterInfoObj = {};
-       filterInfoObj.key = availableFilterKey;
-       filterDataObj.selections = selections;
-       filterDataObj.filterInfo = filterInfoObj;
-       dossier.filterSelectMultiAttributes(filterDataObj);
 
        	[].forEach.call( document.querySelectorAll('iframe'), 
     		   function  fn(iFrame){ 

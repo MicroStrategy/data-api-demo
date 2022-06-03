@@ -10,7 +10,7 @@ const initialState = {
   datasetList: {
     data: [],
     ui: {
-      selectDatasetIndex: -1
+      unselect: {}
     }
   },
   attributes: {

@@ -17,15 +17,36 @@ export const getCurrentDatasetMetrics = (state) => {
 }
 
 const getCurrentDatasetDefProperty = (state, propertyName) => {
-  const currentDataset = getCurrentDataset(state)
-  return (currentDataset === null)? null: currentDataset.definition.availableObjects[propertyName]
+
+
+  const currentDatasets = getCurrentDataset(state)
+
+    if(currentDatasets === null )return null;
+
+  const datasetDefProperties = []
+
+  for(var i=0;i<currentDatasets.length;i++)
+  {
+    for(var k=0;k<currentDatasets[i].definition.availableObjects[propertyName].length;k++)
+    {
+      currentDatasets[i].definition.availableObjects[propertyName][k].dataset = currentDatasets[i];
+      datasetDefProperties.push(currentDatasets[i].definition.availableObjects[propertyName][k]);
+
+    }
+  }
+  return datasetDefProperties
 }
 
 export const getCurrentDataset = (state) => {
   const {data, ui} = state.datasetList
-  let currentDataset = null 
-  if (data.length > 0) {
-      currentDataset = data[ui.selectDatasetIndex]
+  let currentDataset = []
+
+  for(var i=0;i<data.length;i++)
+  {
+    let dataset = data[i];
+    if (dataset.id in ui.unselect == false ) {
+      currentDataset.push(dataset);
+    }
   }
   return currentDataset
 }
@@ -43,10 +64,12 @@ export const getCreateInstancePostBody = (state) => {
 
     postBody.requestedObjects = {
       attributes: allAttributes.map(attribute => ({
-        id: attribute.id
+        id: attribute.id,
+        ds: attribute.dataset.id
       })).filter(attribute => !(attribute.id in attributesUnselect)),
       metrics: allMetrics.map(metric => ({
-        id: metric.id
+        id: metric.id,
+        ds: metric.dataset.id
       })).filter(metric => !(metric.id in metricsUnselect))
     }    
   //}

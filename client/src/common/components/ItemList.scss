@@ -46,8 +46,9 @@ $item-height: $wsvi-panel-row-height;
 
       .QP__item-name{
         @extend %ellipsis;
-        max-width: 175px;
+        max-width: 300px;
       }
     }
   }
 }
+
