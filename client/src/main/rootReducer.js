@@ -61,6 +61,9 @@ const rootReducer = (state, action) => {
                 unselect: {}
             }
         }
+        for (const dataset of datasetList.data) {
+            datasetList.ui.unselect[dataset.id] = true
+        }   
         sortingData = sortingDataTransform(action.payload[0].definition)
         return {...initialState, 
             datasetList,

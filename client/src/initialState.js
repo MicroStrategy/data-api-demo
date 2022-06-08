@@ -5,13 +5,15 @@ const initialState = {
     projectId: demoConfig.projectId,
     pageLimit: demoConfig.itemPerPage,
     latestError: "",
-    showError: false
+    showError: false,
+    dataset_filter:""
   },
   datasetList: {
     data: [],
     ui: {
       unselect: {}
     }
+
   },
   attributes: {
     ui: {

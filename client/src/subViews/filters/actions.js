@@ -4,12 +4,6 @@ import {contructNewExpressionFromRawdata} from '../../utils/filterUtils'
 
 import {CONSTANTS, FILTER_ACTIONS, MAIN_UI_ACTIONS, RESULT_ACTIONS} from '../../constants'
 
-// let rawExpessionData = {
-// 	operator: this.state.operator,
-// 	targetObject: availableObjects[this.state.selectedIndex],
-// 	selectAttributeForm: availableObjects[this.state.selectedIndex].forms[this.state.selectFormIndex],
-// 	constant: this.state.constant
-// }
 export const getAttributeElement = (datasetId,attributeId) => {
 	return (dispatch, getState) => {
 		getAttributeElementWithRetry(dispatch, getState,datasetId, attributeId).catch(

@@ -27,7 +27,7 @@ class DatasetDropList extends React.Component{
       }
      
     render(){
-        const {data, ui,onChangeItemSelection} = this.props
+        const {data, dataset_filter,ui,onChangeItemSelection} = this.props
         const {unselect} = ui
         const isEmpty = data.length === 0
         const title = isEmpty ? "Loading datasets..." : "Datasets"
@@ -35,6 +35,8 @@ class DatasetDropList extends React.Component{
 
         return (
             <div className="QP__items">
+            {(data.length === 0) && <div>Loading ...
+            </div>}
             {(data.length > 0) && <div className="QP__item QP__items__selectAll" onClick={()=>{this.changeAllSelection()}}>
               <input readOnly type="checkbox" checked={Object.keys(unselect).length === 0}/>
               <div className={`QP__item-icon ${(Object.keys(unselect).length === 0)? "qp-multi-check-icon" : "qp-multi-uncheck-icon"}`}/>
@@ -42,7 +44,8 @@ class DatasetDropList extends React.Component{
             </div>}
             <div className="QP__items-list">
             {
-              data.map(item => 
+            
+              data.filter(item => dataset_filter === undefined || dataset_filter === '' || item.name.indexOf(dataset_filter) !== -1).map(item => 
                 (<div className="QP__item" key={item.id} onClick={()=>{onChangeItemSelection(item.id)}}>
                   <input readOnly type="checkbox" checked={!(item.id in unselect)}/>
                   <div className={`QP__item-icon ${!(item.id in unselect)? "qp-multi-check-icon" : "qp-multi-uncheck-icon"}`}/>

@@ -4,6 +4,12 @@ import {MAIN_UI_ACTIONS} from '../constants'
 
 const uiReducer = (state=initialState.ui, action) => {
   switch(action.type){
+    case MAIN_UI_ACTIONS.FILTER_DS_LIST:
+          
+      return {
+        ...state,
+        dataset_filter: action.payload
+      }
     case MAIN_UI_ACTIONS.DISPLAY_ERROR_MSG:
       return {
         ...state,

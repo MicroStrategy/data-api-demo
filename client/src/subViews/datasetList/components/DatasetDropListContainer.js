@@ -12,10 +12,12 @@ function mapStateToProps(state) {
         data,
         ui
     } = state.datasetList
-
+    const {
+        dataset_filter
+    } = state.ui
     return {
         data,
-        ui
+        ui,dataset_filter
     }
 }
 function mapDispatchToProps(dispatch) {

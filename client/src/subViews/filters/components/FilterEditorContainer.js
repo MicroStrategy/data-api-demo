@@ -11,6 +11,7 @@ function mapStateToProps(state, props) {
     let selectFormIndex
     let operatorIndex
     let constant
+    let constant2
     let isQualification
     let selectedListOptionIndex
     let selectedElementIndexs
@@ -74,6 +75,7 @@ function mapStateToProps(state, props) {
         selectFormIndex = 0
         operatorIndex = 0
         constant = ''
+        constant2 = ''
         isQualification = isViewFilter?isQualification: true
         selectedListOptionIndex = 0
         selectedElementIndexs = []
@@ -91,6 +93,7 @@ function mapStateToProps(state, props) {
             selectFormIndex,
             operatorIndex,
             constant,
+            constant2,
             isQualification,
             selectedListOptionIndex,
             selectedElementIndexs,

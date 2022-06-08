@@ -12,6 +12,12 @@ export const hideErrorMessage = () => {
   }
 }
 
+export const changeFilter = (new_filter) => {
+  return {
+    type: MAIN_UI_ACTIONS.FILTER_DS_LIST,
+    payload:new_filter 
+  }
+}
 export const applyCondition = () => {
 
   // Re-apply condition, must be start with 0
@@ -46,14 +52,7 @@ export const applyCondition = () => {
 
 
 
-    /*createInstanceAsync(dispatch, getState, 0).then((data) => {
-      dispatch({
-				type: RESULT_ACTIONS.REFRESH_RESULT_PANEL,
-				payload: data
-			})
-    }).catch(httpErrorHandling(dispatch, MAIN_UI_ACTIONS.DISPLAY_ERROR_MSG))
-
-    */
+    
 
   };
 }

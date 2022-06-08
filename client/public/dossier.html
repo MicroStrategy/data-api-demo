@@ -80,12 +80,15 @@ body {font-family: "Lato", sans-serif;}
     <table style="width:100%">
   <tr><td style="width:20%">
 <img src="./images/left-header.png" alt="Integrity Connect" width="275" height="80" />
-</td><td style="width:80%"> <h2 style="color:#204173; text-align:center" id="h2">Dossier</h2> <div onclick="save()">Save</div></td></tr>
-</table>
+</td><td style="width:80%"> <h2 style="color:#204173; text-align:center" id="h2">Dossier</h2></td>
 
+  <!--<td><div style="color:#204173; text-align:center" onclick="save()">Save</div></td> -->
+
+</tr>
+</table>
 <DIV ID="MicroStrategyDossier0"  style="height:90%; width:98%;position: fixed;">
-<DIV ID="MicroStrategyDossier1"  style="height:100%; width:100%;position: absolute;"></DIV>
-</DIV>
+  <DIV ID="MicroStrategyDossier1"  style="height:100%; width:100%;position: absolute;"></DIV>
+  </DIV>
 <script>
    
 function getQueryStringParameters(url) {
@@ -142,7 +145,6 @@ var baseMicroStrategyRestURL = window.location.origin + "/MicroStrategyLibrary";
 baseMicroStrategyRestURL = "https://env-279203.customer.cloud.microstrategy.com/MicroStrategyLibrary";
 
 var projectUrl = baseMicroStrategyRestURL + '/app' + ((projectId != "")? ('/' + projectId) : "");
-var dossierUrl = projectUrl + ((dossierId != "")? ('/' + dossierId) : "") ;
 
 
 
@@ -203,6 +205,14 @@ function getCookie(name) {
         	 }else
         	 {
         		 console.log("MSTR Request failed! Ret=" + xhr.status);
+             var jsonResponse = xhr.response;
+             if(jsonResponse.message)
+             {
+               alert("Error from MicroStrategy Server: " + jsonResponse.message);
+             }else
+             {
+              alert("Error from MicroStrategyServer Return Code =" + xhr.status);
+            }
         	 }
                 
             }
@@ -237,20 +247,20 @@ var editInstance = function(instance){
        if (xhr.readyState === 4) {
          if (xhr.status >= 200 && xhr.status < 400) { 
               var jsonResponse = xhr.response;
-              editInstanceAddAttribute(instance);
+              editInstanceAddFilters(instance);
               //saveInstance(instance);
              
               
          }else
          {
-           console.log("MSTR Request failed! Ret=" + xhr.status);
+           alert("MSTR Request failed! Ret=" + xhr.status);
          }
               
           }
       }
 
 }
-var editInstanceAddAttribute = function(instance){
+var editInstanceAddFilters = function(instance){
 
   var url = baseMicroStrategyRestURL + "/api/documents/" + dossierId + "/instances/" +instance.mid + "/manipulations";
   //var url = baseMicroStrategyRestURL + "/servlet/taskProc";
@@ -278,102 +288,196 @@ var editInstanceAddAttribute = function(instance){
             body.actions[0].actions.push(act);
           }
           
+
           // Add Metrics
+          /*
           for (var i = 0; i < decodedBody.requestedObjects.metrics.length; i++) {
             var metric = decodedBody.requestedObjects.metrics[i];
             var act =  {"act":"addUnit","unitId":metric.id,"unitType":12,"unitPos":1,"dsId":metric.ds,"isFirst":true,"axis":2};
             body.actions[0].actions.push(act);
-          }
-          // Add Attribute Filter
+          }*/
+          // Add view Filters
           for (var i = 0; i < decodedBody.viewFilter.operands.length; i++) {
             var operand = decodedBody.viewFilter.operands[i];
             console.log("operand " + JSON.stringify(operand));
-            if(operand.operator == 'In')
-            {
-              var attr =  operand.operands[0];
+            
+          
               var nodeKey = "ANODE"+i;
               var ctlKey = "ACTRLKEY"+i;
-             var act = {
-               "act":"addControl",
-               "parentKey":"K49",
-               "isUC":true,
-               "unitType":12,
-               "nodeKey":nodeKey,
-               "ctlKey":ctlKey,
-               "unitId":attr.id,
-               "targetKeys":[
-                  "K33"
-               ],
-               "ctlType":1,
-               "gpType":1
-            };
-             
-               body.actions.push(act);
-   
-             
+              var attr;
+              if(operand.operands[0].type === 'attribute')
+              {
+
+                attr =  operand.operands[0];
+              }
+              if(operand.operands[0].type === 'form')
+              {
+
+                attr =  operand.operands[0].attribute;
+              }
+
+              if(attr)
+              {
+
+                  var act = {
+                    "act":"addControl",
+                    "parentKey":"K49",
+                    "isUC":true,
+                    "unitType":12,
+                    "nodeKey":nodeKey,
+                    "ctlKey":ctlKey,
+                    "unitId":attr.id,
+                    "targetKeys":[
+                        "K33"
+                    ],
+                    "ctlType":1,
+                    "gpType":1
+                  };
+                  body.actions.push(act);
+                    
+                    
+                    if(operand.operator == 'In' && operand.operands[1].elements)
+                    {
+                      for (var k = 0; k <operand.operands[1].elements.length; k++) {
+                        var element = operand.operands[1].elements[k];
+                        console.log("element " + JSON.stringify(element));
+                        var elemList = []
+                        var  element_id = element.id.split("\:");
+                        console.log("element " + JSON.stringify(element_id));
+                        elemList.push("h" + element_id[1] + ";" +  element_id[0] + ";"+ element.formValues[0]);
+                        var act2 =   {
+                        "act":"setSelectorElements",
+                        "keyContext": "1\u001e" + nodeKey + "\u001e" + ctlKey,
+                        "ctlKey":ctlKey,
+                        "elemList":elemList.join("\u001e"), 
+                        "isVisualization":false,
+                        "include":true,
+                        "tks":"K33"
+                        }
+                      } // end for
+                      body.actions.push(act2);
+        
+                    } // if
+        
+                    if(operand.operator == 'Between' && operand.operands[1].dataType === 'date')
+                    {
+                      var act5 = {
+                        "act":"format",
+                        "unitKey":ctlKey,
+                        "unitType":111,
+                        "formatType":1,
+                        "format":{
+                          "FormattingSize":{"HeightMode":"0","Height":"1.0417","Width":"1.4479"},
+                          "FormattingSelector":{"Style":11,"ItemWidthMode":1,"ShowElementCount":1,"ExportAsShownOnWeb":1},
+                          "FormattingAppearance":{"Name":"Date Entered"},
+                          "FormattingOrder":{"ZIndex":0}
+                        },
+                        "keyContext": "1\u001e" + nodeKey + "\u001e" + ctlKey,
+                      }
+                      body.actions.push(act5);
+                      const form = operand.operands[0].form;
+                      var value = operand.operands[1].value;
+                      value = value.replace('-',"\u001e");
+              var act4 = {
+              "act":"setSelectorExpression",
+                    "keyContext": "1\u001e" + nodeKey + "\u001e" + ctlKey,
+                    "ctlKey": ctlKey,
+                  "filterType": "UNKNOWN",
+                  "include": true,
+                  "includeUpdated": true,
+                  "expFunction": 17,
+                  "expFunctionType": 1,
+                  "objId": attr.id,
+                  "objType": 12,
+                  "fid": form.id,
+                  "unset": false,
+                  "expConstants":value,
+                  "dataType": 14
+                }
+                body.actions.push(act4);
+
+                    }
+
+
+               } // if attr
+            
   
 
-          }
+          if(operand.operands[0].type === 'metric' )
+          {
 
-          }
-          for (var i = 0; i < Object.keys(decodedBody.metricLimits).length; i++) {
-             var metricId = Object.keys(decodedBody.metricLimits)[i];
+             var metricId = operand.operands[0].id;
              console.log(metricId);
 
-             var metric = decodedBody.metricLimits[metricId].operands[0];
 
              
              console.log("metric " + JSON.stringify(metric));
              var nodeKey = "MNODE"+i;
              var ctlKey = "MCTRLKEY"+i;
 
-          var act3 = {
-            "act":"addControl",
-            "parentKey":"K49",
-            "nodeKey":nodeKey,
-            "ctlKey":ctlKey,
-            "isUC":true,
-            "unitType":4,
-            "unitId":metricId,
-            "targetKeys":[
-               "K33"
-            ],
-            "ctlType":1,
-            "gpType":1
-       
-          }
-          body.actions.push(act3);
+              var act3 = {
+                "act":"addControl",
+                "parentKey":"K49",
+                "nodeKey":nodeKey,
+                "ctlKey":ctlKey,
+                "isUC":true,
+                "unitType":4,
+                "unitId":metricId,
+                "targetKeys":[
+                  "K33"
+                ],
+                "ctlType":1,
+                "gpType":1
+          
+              }
+              body.actions.push(act3);
 
+              var act5 = {
+                "act":"format",
+                "unitKey":ctlKey,
+                "unitType":111,
+                "formatType":1,
+                "format":{
+                   "FormattingSelector":{
+                      "Style":8
+                   },
+                   "FormattingSize":{
+                      "Height":"0.8958"
+                   }
+                },
+                "keyContext": "1\u001e" + nodeKey + "\u001e" + ctlKey,
+              }
+              body.actions.push(act5);
+            } 
 
+      }
 
-        }
-
-          /*
-          var param = encodeURI(JSON.stringify(body));
-          param = param.replaceAll(":","%3A");
-          param = param.replaceAll(",","%2C");
-          var body2 = "taskId=mojoRWManipulation&msgID=" + instance.mid + "&stateID=-1&params=" + param
-           + "&taskEnv=xhr&taskContentType=json&xts=1653989783350&mstrWeb=random"
-          */
-          xhr.send(JSON.stringify(body));
+      xhr.send(JSON.stringify(body));
       xhr.onreadystatechange = function() {
        if (xhr.readyState === 4) {
+        var jsonResponse = xhr.response;
          if (xhr.status >= 200 && xhr.status < 400) { 
-              var jsonResponse = xhr.response;
-              updateInstanceAddAttribute(instance);
-              //startEmbedding(instance);
-              
+              editInstanceSetFilterValues(instance);
          }else
          {
            console.log("MSTR Request failed! Ret=" + xhr.status);
+           if(jsonResponse && jsonResponse.message)
+           {
+             alert(jsonResponse.message);
+           }else
+           {
+             alert("MSTR Request failed! Ret=" + xhr.status);
+
+           }
+           
+           
          }
               
-          }
       }
-
+}
 }
 
-var updateInstanceAddAttribute = function(instance){
+var editInstanceSetFilterValues = function(instance){
 
   var url = baseMicroStrategyRestURL + "/api/documents/" + dossierId + "/instances/" +instance.mid + "/manipulations";
   //var url = baseMicroStrategyRestURL + "/servlet/taskProc";
@@ -391,42 +495,58 @@ var updateInstanceAddAttribute = function(instance){
       var body ={actions:[]};
 
           
-          // Add Attribute Filter
           for (var i = 0; i < decodedBody.viewFilter.operands.length; i++) {
             var operand = decodedBody.viewFilter.operands[i];
             console.log("operand " + JSON.stringify(operand));
-            if(operand.operator == 'In')
+            if(operand.operands[0].type === 'metric' )
             {
-              var attr =  operand.operands[0];
-              var nodeKey = "ANODE"+i;
-              var ctlKey = "ACTRLKEY"+i;
-              for (var k = 0; k <operand.operands[1].elements.length; k++) {
-                 var element = operand.operands[1].elements[k];
-                 console.log("element " + JSON.stringify(element));
-                 var elemList = []
-                 var  element_id = element.id.split("\:");
-                 console.log("element " + JSON.stringify(element_id));
-                 elemList.push("h" + element_id[1] + ";" +  element_id[0] + ";"+ element.formValues[0]);
-                 var act2 =   {
-                  "act":"setSelectorElements",
-                  "keyContext": "1\u001e" + nodeKey + "\u001e" + ctlKey,
-                  "ctlKey":ctlKey,
-                  "elemList":elemList.join(","), 
-                  "isVisualization":false,
-                  "include":true,
-                  "tks":"K33"
-              }
-              body.actions.push(act2);
-  
 
-                }
-           // if(elemList.length > 0)
+              var nodeKey = "MNODE"+i;
+              var ctlKey = "MCTRLKEY"+i;
+              var metricId = operand.operands[0].id;
+              var expFunction = 10;
+ 
+                    switch(operand.operator)
+                    {
+                      case "Greater":
+                        expFunction = 8;
+                      break;
+                      case "Less":
+                        expFunction = 9;
+                      break;
+                      case "NotEqual":
+                        expFunction = 7;
+                      break;
+                      case "Equals":
+                        expFunction = 6;
+                      break;
+                      
+                    }
+        
+                  var act4 = {
+                    "act":"setSelectorExpression",
+                    "keyContext": "1\u001e" + nodeKey + "\u001e" + ctlKey,
+                    "ctlType":1,
+                    "objId":metricId,
+                    "objType":4,
+                    "expFunction":expFunction,
+                    "expFunctionType":1,
+                    "include":true,
+                    "qt":0,
+                    "unset":false,
+                    "changeQual":true,
+                    "expConstants":operand.operands[1].value,
+                    "dataType":5
+                  }
+                  body.actions.push(act4);
+ 
+            }
+            if(operand.operands[0].type === 'form' && operand.operator == 'Between' && operand.operands[1].dataType === 'date')
             {
-              
+   
           }
-
-            } // if
           }
+          /*
           for (var i = 0; i < Object.keys(decodedBody.metricLimits).length; i++) {
              var metricId = Object.keys(decodedBody.metricLimits)[i];
              console.log(metricId);
@@ -435,29 +555,7 @@ var updateInstanceAddAttribute = function(instance){
 
              
              console.log("metric " + JSON.stringify(metric));
-             var nodeKey = "MNODE"+i;
-             var ctlKey = "MCTRLKEY"+i;
-
-
-
-          var act4 = {
-            "act":"setSelectorExpression",
-            "keyContext": "1\u001e" + nodeKey + "\u001e" + ctlKey,
-            "ctlType":1,
-            "objId":metricId,
-            "objType":4,
-            "expFunction":11,
-            "expFunctionType":1,
-            "include":true,
-            "qt":0,
-            "unset":false,
-            "changeQual":true,
-            "expConstants":"100",
-            "dataType":5
-         }
-         body.actions.push(act4);
-
-        }
+        }*/
 
           /*
           var param = encodeURI(JSON.stringify(body));
@@ -466,17 +564,23 @@ var updateInstanceAddAttribute = function(instance){
           var body2 = "taskId=mojoRWManipulation&msgID=" + instance.mid + "&stateID=-1&params=" + param
            + "&taskEnv=xhr&taskContentType=json&xts=1653989783350&mstrWeb=random"
           */
+
+          if(body.actions.length == 0)
+          {
+            saveInstance(instance);
+            return;
+          }
           xhr.send(JSON.stringify(body));
       xhr.onreadystatechange = function() {
        if (xhr.readyState === 4) {
          if (xhr.status >= 200 && xhr.status < 400) { 
               var jsonResponse = xhr.response;
-              startEmbedding(instance);
+              saveInstance(instance);
              
               
          }else
          {
-           console.log("MSTR Request failed! Ret=" + xhr.status);
+           alert("MSTR Request failed! Ret=" + xhr.status);
            //startEmbedding(instance);
          }
               
@@ -485,6 +589,83 @@ var updateInstanceAddAttribute = function(instance){
 
 }
 
+
+
+
+var getUserId = function(){
+
+  var url = baseMicroStrategyRestURL + "/api/sessions";
+		
+  var xhr = new XMLHttpRequest();
+  //var url = baseMicroStrategyRestURL + "/app/"+ projectId + "/" + dossierId+ "/K53-K45/edit"
+      xhr.open("GET", url);
+      xhr.setRequestHeader("X-MSTR-AuthToken", mstrAuthToken);
+      xhr.setRequestHeader("X-MSTR-ProjectID", projectId);
+
+      xhr.responseType = 'json';
+      xhr.withCredentials = true;
+      
+            
+      xhr.send(null);
+      xhr.onreadystatechange = function() {
+       if (xhr.readyState === 4) {
+         if (xhr.status >= 200 && xhr.status < 400) { 
+              var jsonResponse = xhr.response;
+              //alert("Save as " + name);
+
+              userId = jsonResponse.id;
+              addToLibrary(userId);
+
+              
+         }else
+         {
+           alert("MSTR Request failed! Ret=" + xhr.status);
+         }
+              
+          }
+      }
+
+}
+var addToLibrary = function(userId){
+
+  //var url = baseMicroStrategyRestURL + "/servlet/taskProc";
+		
+  var xhr = new XMLHttpRequest();
+  var url = baseMicroStrategyRestURL + "/api/dossierPersonalView"
+      xhr.open("POST", url);
+      xhr.setRequestHeader("X-MSTR-AuthToken", mstrAuthToken);
+      xhr.setRequestHeader("X-MSTR-ProjectID", projectId);
+      xhr.setRequestHeader("Content-Type", "application/json");
+
+      xhr.responseType = 'json';
+      xhr.withCredentials = true;
+
+      var body ={"srcId":dossierId
+        ,"publishedToUsers":[userId]
+        ,"publishAction":"PUBLISH","isInstance":false};
+
+            
+      xhr.send(JSON.stringify(body));
+      xhr.onreadystatechange = function() {
+       if (xhr.readyState === 4) {
+         if (xhr.status >= 200 && xhr.status < 400) { 
+              var jsonResponse = xhr.response;
+              //alert("Save as " + name);
+
+              startEmbedding();
+              
+         }else
+         {
+           alert("MSTR Request failed! Ret=" + xhr.status);
+         }
+              
+          }
+      }
+
+}
+
+// https://env-279203.customer.cloud.microstrategy.com/MicroStrategyLibrary/api/dossierPersonalView
+//
 var saveInstance = function(instance){
 
   var url = baseMicroStrategyRestURL + "/servlet/taskProc";
@@ -500,42 +681,86 @@ var saveInstance = function(instance){
       xhr.withCredentials = true;
       const d = new Date();
       
-      var name = "New Dossier "  + d.getTime();
+      var name = datasets[0].name +  " "  + d.getTime();
       
-      var body = "taskId=saveRW&msgID=" + instance + "&folderID=D3C7D461F69C4610AA6BAA5EF51F4125&objName=" +name+ "&objDesc=&saveAsFlags=4&skipRebuild=false&taskEnv=xhr&taskContentType=json&xts=1653989783350&mstrWeb=random"
+      var body = "taskId=saveRW&msgID=" + instance.mid 
+        + "&folderID=30A97239EF44B4E3BCC1FFA454FA1926"
+        + "&objName=" +name+ 
+        "&objDesc=&saveAsFlags=4&skipRebuild=false&taskEnv=xhr&taskContentType=json&xts=1653989783350&mstrWeb=random"
             
       xhr.send(body);
       xhr.onreadystatechange = function() {
        if (xhr.readyState === 4) {
          if (xhr.status >= 200 && xhr.status < 400) { 
               var jsonResponse = xhr.response;
-              alert("Save as " + name);
-             
+              //alert("Save as " + name);
+
+              dossierId = jsonResponse.did;
+              getUserId();
+
               
          }else
          {
-           console.log("MSTR Request failed! Ret=" + xhr.status);
+           alert("MSTR Request failed! Ret=" + xhr.status);
          }
               
           }
       }
 
 }
+filterUpdated = function(e) {
+            
+  console.log( JSON.stringify(e,null,2));
 
+}
 		 
 var startEmbedding = function(instance) {
    	
-   	
-    var filters;
-    
-    //if(filter_parameter) 
-    //{
-    //	filters = JSON.parse(filter_parameter);
-    //}
+  var dossierUrl = projectUrl + ((dossierId != "")? ('/' + dossierId) : "") ;
 
+    var filters = [];
+    /*
+    filters: [
+    {
+        "name": "Region", //You can change to the actual attribute name.
+        "selections": [
+            {"name":"NAM"} //You can change to the actual attribute element name.
+        ]
+    }  
+]*/
+   /*
+    for (var i = 0; i < decodedBody.viewFilter.operands.length; i++) {
+      var operand = decodedBody.viewFilter.operands[i];
+      console.log("operand " + JSON.stringify(operand));
+      if(operand.operator == 'In')
+      {
+        var ctlKey = "ACTRLKEY"+i;
+        var attr =  operand.operands[0];
+        var filter = {};
+        filter.key = ctlKey;
+        filter.name = attr.name;
+        filter.selections = [];
+        for (var k = 0; k <operand.operands[1].elements.length; k++) {
+           var element = operand.operands[1].elements[k];
+           console.log("element " + JSON.stringify(element));
+           var selection = {};
+           selection.name = element.formValues[0];
+
+           var  element_id = element.id.split("\:");
+           selection.id = "h" + element_id[1] + ";" +  element_id[0];
+           filter.selections.push(selection);
+           
+        }
+        filters.push(filter);
+
+      }
+
+    }
+    console.log("Filter " + JSON.stringify(filters));
+    */
    	microstrategy.dossier.create({
        	placeholder: document.getElementById("MicroStrategyDossier1")
-        ,instance:instance
+        //,instance:instance
        	,url: dossierUrl
       	,enableResponsive: true
         ,filterFeature: {
@@ -546,7 +771,7 @@ var startEmbedding = function(instance) {
       	,
         
         navigationBar: {
-          edit: false,
+          edit: true,
           enabled: true,
           gotoLibrary: false,
           title: false,
@@ -558,17 +783,19 @@ var startEmbedding = function(instance) {
           notification: false,
           filter: true,
           options: false,
-          search: false,
-          bookmark: false
+          search: true,
+          bookmark: true
         }
         
-       //,filters: decodedBody.viewFilter
+       ,filters: filters
     	  
    	}).then(function(dossier) {
    		
        console.log("dossier loaded");
+       dossier.registerEventHandler(microstrategy.dossier.EventType.ON_FILTER_UPDATED,filterUpdated);
 
-
+       
+      //dossier.filterSelectMultiAttributes(filter);
        	[].forEach.call( document.querySelectorAll('iframe'), 
     		   function  fn(iFrame){ 
 	    	   	   iFrame.onload =  function() {

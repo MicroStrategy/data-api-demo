@@ -11,12 +11,16 @@ import './MainPage.scss'
 
 
 const MainPage = ({
+    filter,
     dataIsEmpty,
     latestError,
     showError,
     onApplyCondition,
-    onHideErrorMessage
+    onHideErrorMessage,
+    onChangeFilter
 }) => {
+   
+
     return (
         <div className="quality-play-app">
             {showError && <Alert className="pop-alert" bsStyle="danger" onDismiss={onHideErrorMessage}>
@@ -24,21 +28,37 @@ const MainPage = ({
             </Alert>}
             <div className="QP__context">
                 <div className="QP__context__left">
+                    <div className="QP__datasetList">
+                    <div className="QP__attributes-metrics-container">
                     <div className="QP__conditions__title">Datasets</div>
+                    <div className="QP__conditions__title">Filter:
+                    <input type="text"  value={filter} 
+                    onChange={(e) => { 
+                        console.log("changed " +e.target.value) ;
+                        onChangeFilter(e.target.value);
+                    } }
+                    /></div>
                     <div className="QP__attributes-metrics-area__list">
                         <DatasetDropListContainer />
                     </div>
-
+                    
+                    </div>
+                    </div>
                     { !dataIsEmpty && (<div className="QP__conditions">
                         <div className="QP__conditions__viewFilters">
                             <div className="QP__conditions__title">View Filters</div>
                             <FilterSummaryContainer isViewFilter={true}/>    
-                        </div>    
+                        </div> 
+                        {/*
+
+  
+
                         <div className="QP__conditions__metrics">
                             <div className="QP__conditions__title">Metric Limits</div>
                             <FilterSummaryContainer isViewFilter={false}/>
                         </div>
-                        <SortingListGroupContainer />                    
+                        */}  
+                        {/* <SortingListGroupContainer />  */  }          
                         <div className="QP__action">
                         <Button className="QP__apply-bar__button" onClick={() => onApplyCondition()}>Apply</Button>
                         </div>

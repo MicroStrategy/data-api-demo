@@ -13,9 +13,9 @@ const version = "/v2"
 const X_MSTR_AUTH_TOKEN = "X-MSTR-AuthToken"
 const X_MSTR_PROJECT_ID = "X-MSTR-ProjectID"
 
-const LIMIT = 5
+const LIMIT = 1000
 
-const {CUBE_TYPE} = CONSTANTS
+const {CUBE_TYPE,CUBE2_TYPE} = CONSTANTS
 
 export const getAccessToken = () => {
     return sessionStorage.getItem(X_MSTR_AUTH_TOKEN)
@@ -129,8 +129,10 @@ export const getDatasetListByType = async (projectID, type, dispatch) => {
 export const getDatasetDefinition = async (dataset, projectID, dispatch) => {
     // We need to try-catch here to avoid multiple requests end unexpectly
     try {
-        const urlPrefix = (dataset.subtype === CUBE_TYPE) ? CUBE_DEF_URL_PREFIX : REPORT_DEF_URL_PREFIX
+        const urlPrefix = (dataset.subtype === CUBE_TYPE || dataset.subtype === CUBE2_TYPE) ? CUBE_DEF_URL_PREFIX : REPORT_DEF_URL_PREFIX
         const url = version + urlPrefix + dataset.id
+
+        console.log("get def " +dataset.subtype + " " + dataset.id + " " + dataset.name)
         return await requestRetry(url, {
             headers: {
                 [X_MSTR_PROJECT_ID]: projectID
@@ -138,6 +140,7 @@ export const getDatasetDefinition = async (dataset, projectID, dispatch) => {
         }, dispatch)
     }
     catch (ex) {
+        console.log("Can't get def for " + dataset.subtype + " " + dataset.id + " " + dataset.name)
         return {
             definition: null
        }
@@ -159,7 +162,7 @@ export const getAttributeElements = async (projectId, datasetId, attributeId, di
 }
 
 export const getObjectData =  async (dataset, projectID, instanceID, pageIdx, dispatch) => {
-    const urlPrefix = (dataset.subtype === CUBE_TYPE) ? CUBE_DEF_URL_PREFIX : REPORT_DEF_URL_PREFIX
+    const urlPrefix = (dataset.subtype === CUBE_TYPE || dataset.subtype === CUBE2_TYPE) ? CUBE_DEF_URL_PREFIX : REPORT_DEF_URL_PREFIX
     const url = `${version}${urlPrefix}${dataset.id}/instances/${instanceID}` 
     
     return await requestRetry(url, {
@@ -174,7 +177,7 @@ export const getObjectData =  async (dataset, projectID, instanceID, pageIdx, di
 }
 
 export const createInstance = async (dataset, projectID, pageIdx, postBody, dispatch) => {
-    const urlPrefix = (dataset.subtype === CUBE_TYPE) ? CUBE_DEF_URL_PREFIX : REPORT_DEF_URL_PREFIX
+    const urlPrefix = (dataset.subtype === CUBE_TYPE || dataset.subtype === CUBE2_TYPE) ? CUBE_DEF_URL_PREFIX : REPORT_DEF_URL_PREFIX
     const url = version + urlPrefix + dataset.id + INSTANCES
     
     return await requestRetry(url, {

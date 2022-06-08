@@ -1,6 +1,7 @@
 export const MAIN_UI_ACTIONS = {
     DISPLAY_ERROR_MSG: "DISPLAY_ERROR_MSG",
-    HIDE_ERROR_MSG: "HIDE_ERROR_MSG"
+    HIDE_ERROR_MSG: "HIDE_ERROR_MSG",
+    FILTER_DS_LIST:"FILTER_DS_LIST"
 }
 
 export const DATASET_LIST_ACTIONS = {
@@ -52,7 +53,8 @@ export const HTTP_ACTIONS = {
 }
 
 export const CONSTANTS = {
-    MAX_TRY_COUNT: 2,
+    MAX_TRY_COUNT: 3,
     CUBE_TYPE: 776,
+    CUBE2_TYPE:779,
     REPORT_TYPE: 768
 }

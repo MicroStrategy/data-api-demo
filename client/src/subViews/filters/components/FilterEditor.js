@@ -21,6 +21,7 @@ class FilterEditor extends React.Component {
                 selectFormIndex: props.selectFormIndex,
                 operatorIndex: props.operatorIndex,
                 constant: props.constant,
+                constant2: props.constant2,
                 isQualification: props.isQualification,
                 selectedListOptionIndex: props.selectedListOptionIndex,
                 selectedElementIndexs: props.selectedElementIndexs,
@@ -42,6 +43,7 @@ class FilterEditor extends React.Component {
             selectFormIndex: this.props.selectFormIndex,
             operatorIndex: this.props.operatorIndex,
             constant: this.props.constant,
+            constant2: this.props.constant2,
             isQualification: this.props.isQualification,
             selectedListOptionIndex: this.props.selectedListOptionIndex,
             selectedElementIndexs: this.props.selectedElementIndexs,
@@ -66,6 +68,13 @@ class FilterEditor extends React.Component {
             return (
                 <div>
                     <input type="text" placeholder="Please input constant" onChange={(e) => { this.ConstantValueChange(e) } } value={this.state.constant} />
+                </div>
+            );
+        }
+        const createNewExpression2 = () => {
+            return (
+                <div>
+                    <input type="text" placeholder="Please input constant" onChange={(e) => { this.Constant2ValueChange(e) } } value={this.state.constant2} />
                 </div>
             );
         }
@@ -168,6 +177,7 @@ class FilterEditor extends React.Component {
 
 
         const rightPatrInFilterUI = () => {
+            console.log("operatorIndex " + JSON.stringify(this.state.operatorIndex) )
             if ((!this.state.isQualification)&&isAttributeSelected&&this.state.isViewFilter) {
                 return <div></div>
             } else {
@@ -176,7 +186,8 @@ class FilterEditor extends React.Component {
                     <div>
                         <div className="grey-label">Based on</div>
                         <div>
-                            {createNewExpression()}
+                            {createNewExpression()}<br/><br/>
+                            {this.state.operatorIndex === 7 && createNewExpression2()}
                         </div>
                     </div>)
             }
@@ -233,6 +244,36 @@ class FilterEditor extends React.Component {
 
     onOperatorOptionclick(e) {
         this.setState({ operatorIndex: parseInt(e.target.value) })
+        let selectedIndex = this.state.selectedIndex
+
+        const isAttributeSelected = (this.props.availableObjects[selectedIndex].type || "").toLowerCase() === "attribute"
+        if (e.target.value === 7 && this.state.isQualification && isAttributeSelected && this.state.isViewFilter) {
+            const attribute = this.props.availableObjects[this.state.selectedIndex]    
+            const elements = attribute.elements
+            if(elements)
+            {
+                const constant = elements[0].formValues[0]
+                const constant2 = elements[elements.length-1].formValues[0]
+                this.setState({ constant,constant2})
+            }else
+            {
+                const selectedForm = this.props.availableObjects[selectedIndex].forms[this.state.selectFormIndex]
+                if(selectedForm.dataType === 'date')
+                {
+                    var d = new Date();
+      
+                    const constant = d.toLocaleDateString('en');
+
+                    d = new Date(d.getTime() - (30*24*60*60*1000))
+                    const constant2 = d.toLocaleDateString('en');
+                    let isOkButtonEnable = true
+                    this.setState({ constant,constant2,isOkButtonEnable})
+                        
+              
+                }
+            }
+        }
+
     }
 
     ConstantValueChange(e) {
@@ -243,6 +284,11 @@ class FilterEditor extends React.Component {
         }
 
         this.setState({ constant, isOkButtonEnable})
+    }
+    Constant2ValueChange(e) {
+        const constant2 = e.target.value
+
+        this.setState({ constant2})
     }
 
     targetObjectSelectChange(e){
@@ -361,7 +407,8 @@ class FilterEditor extends React.Component {
         let isAttributeSelected= (availableObjects[selectedIndex].type || "").toLowerCase() === "attribute" ? true : false
 
 
-        this.state.selectedElementIndexs.forEach((selectedElementIndex)=>{selectedElements.push(availableObjects[selectedIndex].elements[selectedElementIndex])})
+        if(isAttributeSelected)
+            this.state.selectedElementIndexs.forEach((selectedElementIndex)=>{selectedElements.push(availableObjects[selectedIndex].elements[selectedElementIndex])})
 
         //in the metric limit expression edit condition,the targetObject and metricLimitTargetObject can be different
         let rawExpessionData = {
@@ -369,6 +416,7 @@ class FilterEditor extends React.Component {
             targetObject: availableObjects[selectedIndex],
             selectAttributeForm: isAttributeSelected ? availableObjects[selectedIndex].forms[this.state.selectFormIndex] : 0,
             constant: this.state.constant,
+            constant2: this.state.constant2,
             isQualification: this.state.isQualification,
             selectedElements: selectedElements,
             selectedListOperator: listOptions[this.state.selectedListOptionIndex],

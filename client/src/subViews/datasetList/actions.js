@@ -18,8 +18,6 @@ export const changeSelectDataset = (index) => {
 			type: DATASET_LIST_ACTIONS.CHANGE_SELECT_DATASET,
 			payload: index
 		})
-		//createInstanceAndRefreshTable(dispatch, getState, 0).catch(
-		//	httpErrorHandling(dispatch, MAIN_UI_ACTIONS.DISPLAY_ERROR_MSG))
 	}
 }
 
@@ -38,8 +36,6 @@ const getDatasetsAndCreateInstance = async (dispatch, getState) => {
 	})
 
 	return;  
-	//demoConfig.itemPerPage = 0 ; 
-	//return await createInstanceAndRefreshTable(dispatch, getState, 0)
 }
 
 

@@ -1,11 +1,25 @@
-export const operators = [{ name: "Greater", value: ">" }, { name: "Less", value: "<" }, { name: "Equals", value: "=" }, { name: "NotEqual", value: "!=" }, { name: "BeginsWith", value: "..." }, { name: "Contains", value: "<>" }, { name: "Like", value: "..." }]
-export const listOptions = [{ name: "In List", value: "In" }, { name: "Not In List", value: "NotIn" }]
+//export const operators = [{ name: "Greater", value: ">" }, { name: "Less", value: "<" }, { name: "Equals", value: "=" }, { name: "NotEqual", value: "!=" }, { name: "BeginsWith", value: "..." }, { name: "Contains", value: "<>" }, { name: "Like", value: "..." }]
+//export const listOptions = [{ name: "In List", value: "In" }, { name: "Not In List", value: "NotIn" }]
+
+export const operators = [{ name: "Greater", value: ">" }
+			, { name: "Less", value: "<" }
+			, { name: "Equals", value: "=" }
+			, { name: "NotEqual", value: "!=" }
+			, { name: "BeginsWith", value: "..." }
+			, { name: "Contains", value: "<>" }
+			, { name: "Like", value: "..." }
+			, { name: "Between", value: "><" }
+		]
+export const listOptions = [
+	{ name: "In List", value: "In" }
+	, { name: "Not In List", value: "NotIn" }
+]
 
 export const contructNewExpressionFromRawdata = (rawExpressionData)=>{
 	console.log("rawExpressionData ", rawExpressionData.operator)
 
 	let expressionIndex = rawExpressionData.expressionIndex;
-	let isAttribute = rawExpressionData.targetObject.type === "Attribute" ? true : false
+	let isAttribute = rawExpressionData.targetObject.type.toLowerCase() === "attribute" ? true : false
 	let targetObject = rawExpressionData.targetObject
 	let formName = isAttribute ? rawExpressionData.selectAttributeForm.name : ""
 
@@ -20,7 +34,7 @@ export const contructNewExpressionFromRawdata = (rawExpressionData)=>{
 	let contentDisplay
 
 	if (isQualification) {
-		contentDisplay = targetObject.name + (isAttribute ? ' @' + formName : '') + ' ' + rawExpressionData.operator + ' ' + rawExpressionData.constant
+		contentDisplay = targetObject.name + (isAttribute ? '@' + formName : '') + ' ' + rawExpressionData.operator + ' ' + rawExpressionData.constant
 
 		if (isAttribute) {
 			firstOperand = {
@@ -34,11 +48,16 @@ export const contructNewExpressionFromRawdata = (rawExpressionData)=>{
 					name: rawExpressionData.selectAttributeForm.name
 				}
 			}
-
+			
 			secondOperand = {
 				type: "constant",
-				dataType: "Char",
+				dataType: rawExpressionData.selectAttributeForm.dataType,
 				value: rawExpressionData.constant
+			}
+			if(rawExpressionData.operator === 'Between')
+			{
+				secondOperand.value = rawExpressionData.constant + "-" + rawExpressionData.constant2; 
+				contentDisplay = contentDisplay + "-" + rawExpressionData.constant2;
 			}
 
 		} else {
@@ -105,6 +124,7 @@ const destructParamsFromQualificationExpression = (isViewFilter,firstOperand,sec
 	let selectedIndex =0
 	let operatorIndex =0
 	let constant = ''
+	let constant2 = ''
 	let selectFormIndex = 0
 
 	let targetObjectId
@@ -129,11 +149,17 @@ const destructParamsFromQualificationExpression = (isViewFilter,firstOperand,sec
 	operatorIndex = operators.findIndex(operatorElement => { return operatorElement.name === operator })
 	constant = secondOperand.value
 
+	if(operator === 'Between')
+	{
+		constant = secondOperand.value.split('-')[0]
+		constant2 = secondOperand.value.split('-')[1]
+	}
 	return {
 			selectedIndex,
 			operatorIndex,
 			selectFormIndex,
-			constant
+			constant,
+			constant2
 	}
 }
 
@@ -149,6 +175,7 @@ export const destructParamsFromANExistingExpression = (state, expressionIndex, i
 	let selectFormIndex = 0
 	let operatorIndex = 0
 	let constant = ''
+	let constant2 = ''
 	let isQualification = false
 	let selectedListOptionIndex = 0
 	let selectedElementIndexs = []
@@ -163,7 +190,7 @@ export const destructParamsFromANExistingExpression = (state, expressionIndex, i
 			isQualification = !(listOptions.findIndex(listOption=>{return listOption.value === operator}) >= 0)
 
 			if (isQualification) {
-					({selectedIndex,operatorIndex,selectFormIndex,constant}= destructParamsFromQualificationExpression(isViewFilter,firstOperand,secondOperand,operator,availableObjects,metricLimitTargetObjectId))
+					({selectedIndex,operatorIndex,selectFormIndex,constant,constant2}= destructParamsFromQualificationExpression(isViewFilter,firstOperand,secondOperand,operator,availableObjects,metricLimitTargetObjectId))
 			} else {
 					targetObjectId = firstOperand.id;//targetobject must be an attribute
 					selectedIndex = availableObjects.findIndex((availableObject) => { return availableObject.id === targetObjectId });
@@ -180,7 +207,7 @@ export const destructParamsFromANExistingExpression = (state, expressionIndex, i
 			}
 	}else{  
 			isQualification = true ;//metric limit only support qualification   
-			({selectedIndex,operatorIndex,selectFormIndex,constant} = destructParamsFromQualificationExpression(isViewFilter,firstOperand,secondOperand,operator,availableObjects,metricLimitTargetObjectId))
+			({selectedIndex,operatorIndex,selectFormIndex,constant,constant2} = destructParamsFromQualificationExpression(isViewFilter,firstOperand,secondOperand,operator,availableObjects,metricLimitTargetObjectId))
 	}
 
 	return ({
@@ -192,6 +219,7 @@ export const destructParamsFromANExistingExpression = (state, expressionIndex, i
 			selectFormIndex,
 			operatorIndex,
 			constant,
+			constant2,
 			isQualification,
 			selectedListOptionIndex,
 			selectedElementIndexs,

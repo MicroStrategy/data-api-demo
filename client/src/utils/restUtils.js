@@ -11,7 +11,8 @@ export const getDatasetListAsync = async (dispatch, getState) => {
 
   const state = getState()
   const projectID = getProjectId(state)
-  const allTypes = [CONSTANTS.CUBE_TYPE, CONSTANTS.REPORT_TYPE]
+  //const allTypes = [CONSTANTS.CUBE_TYPE, CONSTANTS.REPORT_TYPE,CONSTANTS.CUBE2_TYPE]
+  const allTypes = [CONSTANTS.CUBE_TYPE, CONSTANTS.CUBE2_TYPE]
   const datasetsList = await Promise.all(allTypes.map(type => getDatasetListByType(projectID, type, dispatch)))
   const datasetList = [...datasetsList[0].result, ...datasetsList[1].result]
   const datasetDefList = await Promise.all(datasetList.map(dataset => getDatasetDefinition(dataset, projectID, dispatch)))
@@ -20,6 +21,8 @@ export const getDatasetListAsync = async (dispatch, getState) => {
       datasetList[i].definition = datasetDefList[i].definition
   }
   const validDatasets = datasetList.filter(dataset => dataset.definition !== null)
+
+  validDatasets.sort((a, b) => a.name.localeCompare(b.name));
   return validDatasets
 }
 
