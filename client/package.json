@@ -18,14 +18,14 @@
     "react-redux": "^5.1.2",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "2.0.4",
+    "react-scripts": "5.0.1",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
     "@svgr/webpack": "^5.4.0",
     "file-loader": "^6.0.0",
-    "node-sass": "^4.14.1",
+    "node-sass": "^9.0.0",
     "resolve-url-loader": "^2.3.2",
     "webpack": "4.19.1"
   },
