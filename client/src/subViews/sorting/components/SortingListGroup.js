@@ -4,7 +4,7 @@ import _ from 'lodash'
 import '../../../include/bootstrap'
 import './SortingListGroup.scss'
 
-import { DropdownButton, ListGroup, ListGroupItem, MenuItem, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { DropdownButton, ListGroup, ListGroupItem, Dropdown, OverlayTrigger, Tooltip } from 'react-bootstrap'
 
 class SortingListGroup extends React.Component {
 
@@ -147,7 +147,7 @@ class SortingListGroup extends React.Component {
                                             {
                                                 data
                                                     .map((current, j) => {
-                                                        return <MenuItem className={this.isElementSelected(current) ? "QP__sorting__table__row__elementMenu__Item" : "QP__sorting__table__row__elementMenu__Unselected__Item"} key={j} active={j === sorting[i].sortby} eventKey={j} onSelect={(ek) => this.onSortingElemetsSelectChange(i, ek)}>{this.getElementName(current)}</MenuItem>
+                                                        return <Dropdown.Item className={this.isElementSelected(current) ? "QP__sorting__table__row__elementMenu__Item" : "QP__sorting__table__row__elementMenu__Unselected__Item"} key={j} active={j === sorting[i].sortby} eventKey={j} onSelect={(ek) => this.onSortingElemetsSelectChange(i, ek)}>{this.getElementName(current)}</Dropdown.Item>
                                                     })
                                                     .filter((element, index) => {
                                                         return !selectedElement.includes(index)
@@ -161,7 +161,7 @@ class SortingListGroup extends React.Component {
                                             :
                                             <DropdownButton className={selected ? "QP__sorting__table__row__sortingButton" : "QP__sorting__table__row__unselected__sortingButton"} dropup title={this.getSortingChoiceTile(i)} id="dropdown-size-medium" disabled={sorting[i].sortby < 0 || data[sorting[i].sortby].type === "attribute"} >
                                                 {[...Array(2).keys()].map(j => {
-                                                    return <MenuItem className="QP__sorting__table__row__sortingMenu__Item" key={j} active={j === sorting[i].order} eventKey={j} onSelect={(ek) => this.onSortingChoiceSelectChange(i, ek)}>{j === 0 ? "Ascending" : "Descending"}</MenuItem>
+                                                    return <Dropdown.Item className="QP__sorting__table__row__sortingMenu__Item" key={j} active={j === sorting[i].order} eventKey={j} onSelect={(ek) => this.onSortingChoiceSelectChange(i, ek)}>{j === 0 ? "Ascending" : "Descending"}</Dropdown.Item>
                                                 })}
                                             </DropdownButton>
                                         }

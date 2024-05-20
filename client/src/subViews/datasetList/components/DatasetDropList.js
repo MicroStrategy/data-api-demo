@@ -3,7 +3,7 @@ import React from 'react'
 import '../../../include/bootstrap'
 import './DatasetDropList.scss'
 
-import {DropdownButton, MenuItem} from 'react-bootstrap'
+import {DropdownButton, Dropdown} from 'react-bootstrap'
 
 class DatasetDropList extends React.Component{
     componentWillMount(){
@@ -33,9 +33,9 @@ class DatasetDropList extends React.Component{
                     disabled={isEmpty} title={title}>
                     {
                         data.map((dataset, i) => (
-                            <MenuItem key={i} active={i === selectDatasetIndex} eventKey={i} onSelect={(ek) => this.onSelectAlert(ek)}>
+                            <Dropdown.Item key={i} active={i === selectDatasetIndex} eventKey={i} onSelect={(ek) => this.onSelectAlert(ek)}>
                                 {dataset.name}
-                            </MenuItem>
+                            </Dropdown.Item>
                         ))
                     }
                 </DropdownButton>

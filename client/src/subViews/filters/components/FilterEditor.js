@@ -2,7 +2,7 @@ import React from 'react'
 
 
 import '../../../include/bootstrap'
-import { Modal, DropdownButton, MenuItem } from 'react-bootstrap'
+import { Modal, DropdownButton, Dropdown } from 'react-bootstrap'
 
 import {operators, listOptions} from '../../../utils/filterUtils'
 
@@ -82,8 +82,8 @@ class FilterEditor extends React.Component {
                     <div>
                         <div className="grey-label">Choose elements by</div>
                         <DropdownButton className="QP__filter__editor__DropDown" title={this.state.isQualification?'Qualification On':'Selecting in list'} id="dropdown-size-medium">
-                            <MenuItem className="QP__filter__editor__MenuItem" key={0} active={this.state.isQualification} eventKey={0} onSelect={(ek) => this.isQualificationSelectChange(ek)}>Qualification On</MenuItem>
-                            <MenuItem className="QP__filter__editor__MenuItem" key={1} active={!this.state.isQualification} eventKey={1} onSelect={(ek) => this.isQualificationSelectChange(ek)}>Selecting in list</MenuItem>
+                            <Dropdown.Item className="QP__filter__editor__MenuItem" key={0} active={this.state.isQualification} eventKey={0} onSelect={(ek) => this.isQualificationSelectChange(ek)}>Qualification On</Dropdown.Item>
+                            <Dropdown.Item className="QP__filter__editor__MenuItem" key={1} active={!this.state.isQualification} eventKey={1} onSelect={(ek) => this.isQualificationSelectChange(ek)}>Selecting in list</Dropdown.Item>
                         </DropdownButton>
                     </div>
 
@@ -204,10 +204,10 @@ class FilterEditor extends React.Component {
                                  title={this.state.selectedIndex>=0?availableObjects[this.state.selectedIndex].name:''} id="dropdown-size-medium">
                                     {availableObjects.map(
                                         (availableObject,index)=> 
-                                        (<MenuItem className={`QP__filter__editor__MenuItem ${(availableObject.type || "").toLowerCase() === "attribute" ? "attribute" : "metric"}`}
+                                        (<Dropdown.Item className={`QP__filter__editor__MenuItem ${(availableObject.type || "").toLowerCase() === "attribute" ? "attribute" : "metric"}`}
                                          key={index} active={index === this.state.selectedIndex} eventKey={index} onSelect={(ek) => this.targetObjectSelectChange(ek)}>
                                           {availableObject.name}
-                                        </MenuItem>)
+                                        </Dropdown.Item>)
                                     )}
                                 </DropdownButton>
                                 <div>
