@@ -1,6 +1,6 @@
 import {FILTER_ACTIONS} from '../../constants'
 import initialState from '../../initialState'
-import produce from "immer"
+import {produce} from "immer"
 
 const reducer = (state = initialState.filters, action = {}) => {
 
