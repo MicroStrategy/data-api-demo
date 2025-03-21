@@ -68,7 +68,7 @@ $wsweb-icon-small-size: $wsvi-default-icon-width;
 
 .qp-mstr-icon {
   @include qp-icon(300, 20);
-  @include qp-icon-pos(20, 20);
+  @include qp-icon-pos(160, 20);
 }
 
 .qp-prev-page-icon {
