@@ -1,4 +1,4 @@
-# MicroStrategy REST API Data Demo
+# REST API Data Demo
 Contains the code of the React app that demonstrates the capabilities of the MicroStrategy REST Data APIs. This Demo was created using a [Create React App](https://facebook.github.io/create-react-app/docs/getting-started).
 
 View [the live demo](https://microstrategy.github.io/data-api-demo/site/).

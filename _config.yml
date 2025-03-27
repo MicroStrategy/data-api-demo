@@ -1,5 +1,5 @@
 theme: jekyll-theme-cayman
-title: MicroStrategy REST API Data Demo
+title: REST API Data Demo
 
 exclude:
   - "client/*"
